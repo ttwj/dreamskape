@@ -1,0 +1,5 @@
+C:\Users\Terence\documents\visual studio 2010\Projects\NyanIRC\NyanIRC\obj\x86\Release\ResolveAssemblyReference.cache
+C:\Users\Terence\documents\visual studio 2010\Projects\NyanIRC\NyanIRC\bin\Release\NyanIRC.exe
+C:\Users\Terence\documents\visual studio 2010\Projects\NyanIRC\NyanIRC\bin\Release\NyanIRC.pdb
+C:\Users\Terence\documents\visual studio 2010\Projects\NyanIRC\NyanIRC\obj\x86\Release\NyanIRC.exe
+C:\Users\Terence\documents\visual studio 2010\Projects\NyanIRC\NyanIRC\obj\x86\Release\NyanIRC.pdb
