@@ -31,8 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NyanIRC">
-      <HintPath>..\..\NyanIRC\NyanIRC\bin\Release\NyanIRC.exe</HintPath>
+    <Reference Include="dreamskape">
+      <HintPath>..\..\dreamskape\bin\Release\dreamskape.exe</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

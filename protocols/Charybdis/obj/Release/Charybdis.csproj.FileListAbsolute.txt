@@ -1,0 +1,7 @@
+C:\Users\Terence\Documents\Visual Studio 2010\Projects\dreamskape\protocols\Charybdis\bin\Release\Charybdis.dll
+C:\Users\Terence\Documents\Visual Studio 2010\Projects\dreamskape\protocols\Charybdis\bin\Release\Charybdis.pdb
+C:\Users\Terence\Documents\Visual Studio 2010\Projects\dreamskape\protocols\Charybdis\bin\Release\dreamskape.exe
+C:\Users\Terence\Documents\Visual Studio 2010\Projects\dreamskape\protocols\Charybdis\bin\Release\dreamskape.pdb
+C:\Users\Terence\Documents\Visual Studio 2010\Projects\dreamskape\protocols\Charybdis\obj\Release\ResolveAssemblyReference.cache
+C:\Users\Terence\Documents\Visual Studio 2010\Projects\dreamskape\protocols\Charybdis\obj\Release\Charybdis.dll
+C:\Users\Terence\Documents\Visual Studio 2010\Projects\dreamskape\protocols\Charybdis\obj\Release\Charybdis.pdb

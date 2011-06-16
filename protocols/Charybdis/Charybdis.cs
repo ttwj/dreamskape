@@ -71,25 +71,7 @@ namespace dreamskape.Proto
             {
                 Send("PONG " + lineArray[1]);
             }
-            else if (lineStart == ":" + SID)
-            {
-                switch (lineArray[1])
-                {
-                    case "UID":
-                        {
-                            //create new user
-                            string user_nickname = lineArray[2];
-                            string user_modes = lineArray[5];
-                            string user_username = lineArray[6];
-                            string user_host = lineArray[7];
-                            string user_UID = lineArray[9];
-                            string user_realname = lineArray[11].Remove(0, 1);
-                            User newuser = new User(user_nickname, user_username, user_modes, user_host, user_realname, user_UID);
-                            Console.WriteLine("Initiated new user " + newuser.nickname);
-                            break;
-                        }
-                }
-            }
+
             else
             {
                 switch (lineArray[1])
@@ -109,6 +91,19 @@ namespace dreamskape.Proto
                             Program.Users.Remove(user_UID);
                             break;
                         }
+                    case "UID":
+                        {
+                            //create new user
+                            string user_nickname = lineArray[2];
+                            string user_modes = lineArray[5];
+                            string user_username = lineArray[6];
+                            string user_host = lineArray[7];
+                            string user_UID = lineArray[9];
+                            string user_realname = lineArray[11].Remove(0, 1);
+                            User newuser = new User(user_nickname, user_username, user_modes, user_host, user_realname, user_UID);
+                            Console.WriteLine("Initiated new user " + newuser.nickname);
+                            break;
+                        }
                 }
             }
 
@@ -123,22 +118,35 @@ namespace dreamskape.Proto
             //create user.
             User derp = new User("nyan", "nyan", "i", "nyan.cat", "nyansall", SID + generateSID());
             derp.introduce();
-            Channel lol = new Channel("#lol", null);
+            Channel lol = new Channel("#lol");
             derp.joinChannel(lol);
             return;
         }
         public override void introduceUser(string nickname, string username, string modes, string hostname, string gecos, string UID)
         {
             //plz dun fuck up plz :(
-            Send(":" + SID + " UID " + nickname + " 1 " + getTimeStamp() + "+" + modes + " " + username + " " + hostname + " 127.0.0.1 " + UID + " :" + gecos);
+            Send(":" + SID + " UID " + nickname + " 1 " + getTimeStamp() + " +" + modes + " " + username + " " + hostname + " 127.0.0.1 " + UID + " :" + gecos);
         }
         public override void msgUser(User sender, User sendee, string message)
         {
-            Send(":" + sender.UID + " PRIVMSG " + sendee.UID + " :" + message);
+            Send(":" + SID + " PRIVMSG " + sendee.UID + " :" + message);
         }
         public override void noticeUser(User sender, User sendee, string message)
         {
-            Send(":" + sender.UID + " NOTICE " + sendee.UID + " :" + message);
+            Send(":" + SID + " NOTICE " + sendee.UID + " :" + message);
         }
+        public override void joinUser(User joinee, Channel channel)
+        {
+            Send(":" + SID + " SJOIN " + getTimeStamp() + " " + channel.name + " + :" + joinee.UID);
+        }
+        public override void killUser(User killee, string reason)
+        {
+            if (reason.Length < 1)
+            {
+                reason = "Killed by dreamskape";
+            }
+            Send(SID + " KILL " + killee.UID + " :" + reason);
+        }
+        
     }
 }

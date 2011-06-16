@@ -2,21 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Collections;
 using System.Reflection;
 using System.IO;
-using dreamskape.Proto;
+using dreamskape.Channels;
+using dreamskape.Users;
 
-namespace dreamskape.Proto
+namespace dreamskape.Modules
 {
-    public class Protocol
+    public class Module
     {
-        public static ProtocolPlugin protocolPlugin;
         public static void loadPlugins()
         {
             try
             {
-                Console.WriteLine("Loading protocol modules..");
+                Console.WriteLine("Loading plugins...");
                 foreach (string str in Directory.GetFiles(@"protocol\"))
                 {
                     FileInfo info = new FileInfo(str);

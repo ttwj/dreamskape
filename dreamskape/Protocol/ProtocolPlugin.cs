@@ -69,5 +69,9 @@ namespace dreamskape.Proto
         public virtual void killUser(User killee, string reason)
         {
         }
+        public virtual void kickUser(User kicker, User kickee, Channel channel, string reason = null)
+        {
+        }
+        
     }
 }
