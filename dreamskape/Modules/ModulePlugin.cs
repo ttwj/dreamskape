@@ -27,6 +27,10 @@ namespace dreamskape.Modules
                 moduleHooks.Add(hook);
             }
         }
+        public string generateUID()
+        {
+            return Program.SID + Proto.ProtocolPlugin.generateUID();
+        }
         public abstract void Initialize();
         public virtual void onUserMessageChannel(ChannelMessageEvent ev) { }
         public virtual void onUserMessageClient(UserMessageEvent ev) { }

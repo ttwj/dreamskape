@@ -24,7 +24,7 @@ namespace dreamskape.Users
         }
         public void noticeUser(User user, string message = "hi")
         {
-            Protocol.protocolPlugin.noticeUser(user, (User)this, message);
+            Protocol.protocolPlugin.noticeUser((User)this, user, message);
         }
     }
 }

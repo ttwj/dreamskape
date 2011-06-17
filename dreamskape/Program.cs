@@ -15,6 +15,7 @@ namespace dreamskape
         public static string protocol = "Charybdis.dll";
         public static Dictionary<string,Channel> Channels;
         public static Dictionary<string, User> Users;
+        public static string SID = "32X";
         public static void Main(string[] args)
         {
             Users = new Dictionary<string, User>();
@@ -22,7 +23,7 @@ namespace dreamskape
             Protocol.loadPlugins();
             Module.loadPlugins();
             ProtocolPlugin p = Protocol.protocolPlugin;
-            p.Init("192.168.1.109", "derp.services", 6667, "pvps1234", "32X");
+            p.Init("192.168.1.109", "derp.services", 6667, "pvps1234", SID);
             Protocol.protocolPlugin.Connect();
             
             

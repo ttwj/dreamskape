@@ -57,7 +57,7 @@ namespace dreamskape.Modules
                 plugin.Initialize();
             }
         }
-        public static void callHook(Hooks hook, User client, Event ev = null)
+        public static void callHook(Hooks hook, Client client, Event ev = null)
         {
             foreach (ModulePlugin module in moduleList)
             {
@@ -78,8 +78,9 @@ namespace dreamskape.Modules
                                 }
                             case Hooks.USER_MESSAGE_CLIENT:
                                 {
+                                    Console.WriteLine("message called");
                                     UserMessageEvent me = (UserMessageEvent)ev;
-                                    if (me.sender == client)
+                                    if (me.sendee == client)
                                     {
                                         module.onUserMessageClient(me);
                                     }

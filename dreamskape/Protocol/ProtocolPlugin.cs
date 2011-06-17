@@ -42,13 +42,13 @@ namespace dreamskape.Proto
             }
             return null;
         }
-        public User getChannelFromName(string channel)
+        public Channel getChannelFromName(string channel)
         {
             if (Program.Channels.ContainsKey(channel.ToLower()))
             {
-                User user;
-                Program.Users.TryGetValue(channel.ToLower(), out user);
-                return user;
+                Channel chan;
+                Program.Channels.TryGetValue(channel.ToLower(), out chan);
+                return chan;
             }
             return null;
         }

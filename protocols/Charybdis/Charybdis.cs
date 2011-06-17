@@ -6,7 +6,9 @@ using System.IO;
 using dreamskape.Channels;
 using dreamskape.Users;
 using dreamskape.Modules;
+using dreamskape.Modules.Events;
 using System.Net.Sockets;
+using System.Text.RegularExpressions;
 
 namespace dreamskape.Proto
 {
@@ -33,9 +35,6 @@ namespace dreamskape.Proto
                 stream = IRC.GetStream();
                 writer = new StreamWriter(stream);
                 reader = new StreamReader(stream);
-                if (!hasBurst)
-                {
-                }
                 while (true)
                 {
                     while ((inputLine = reader.ReadLine()) != null)
@@ -51,24 +50,17 @@ namespace dreamskape.Proto
             {
                 Console.WriteLine("FAIL");
                 Console.WriteLine(e.ToString());
+                
             }
         }
-        public User getUserFromUID(string UID)
-        {
-            if (Program.Users.ContainsKey(UID)) {
-                User user;
-                Program.Users.TryGetValue(UID, out user);
-                return user;
-            }
-            return null;
-        }
+        
         public void parseLine(string line)
         {
             string[] lineArray = line.Split(' ');
             if (!hasBurst)
             {
                 burst();
-                
+                Module.InitModules();
             }
             string lineStart = lineArray[0];
             if (lineStart == "PING")
@@ -117,8 +109,34 @@ namespace dreamskape.Proto
                         }
                     case "PRIVMSG":
                         {
+                            Console.WriteLine("OMG PRIVMSG!!");
+                            User sender = getUserFromUID(lineArray[0].Remove(0, 1));
                             string dest = lineArray[2];
-                            
+                            Client user = (Client)getUserFromUID(dest);
+                            Console.WriteLine(dest);
+                            Console.WriteLine(sender.nickname);
+                            Channel channel = getChannelFromName(dest);
+                            Regex text = new Regex(@":(.*) PRIVMSG (.*) :(.*)");
+                            Match match = text.Match(line);
+                            if (match.Success)
+                            {
+                                string message = match.Groups[3].Value;
+                                Console.WriteLine(message);
+                                if (user != null)
+                                {
+                                    Console.WriteLine("calling hooK!");
+                                    UserMessageEvent ev = new UserMessageEvent(sender, user, message);
+                                    Module.callHook(Hooks.USER_MESSAGE_CLIENT, user, ev);
+                                }
+                                else if (channel != null)
+                                {
+                                    //not implemented :3d
+                                }
+                                else
+                                {
+                                    Console.WriteLine("An unexpected shit happened at " + line);
+                                }
+                            }
                             break;
                         }
                 }
@@ -141,11 +159,11 @@ namespace dreamskape.Proto
         }
         public override void msgUser(User sender, User sendee, string message)
         {
-            Send(":" + SID + " PRIVMSG " + sendee.UID + " :" + message);
+            Send(":" + sender.UID + " PRIVMSG " + sendee.UID + " :" + message);
         }
         public override void noticeUser(User sender, User sendee, string message)
         {
-            Send(":" + SID + " NOTICE " + sendee.UID + " :" + message);
+            Send(":" + sender.UID + " NOTICE " + sendee.UID + " :" + message);
         }
         public override void joinUser(User joinee, Channel channel)
         {
