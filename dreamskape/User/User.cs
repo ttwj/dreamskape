@@ -15,7 +15,8 @@ namespace dreamskape.Users
         public string gecos;
         public string UID;
         public string modes = "";
-        public User(string nickname, string username, string modes, string hostname, string gecos, string UID)
+        public bool isIntroduced = false;
+        public User(string nickname, string username, string modes, string hostname, string gecos, string UID, bool introduced = false)
         {
             this.nickname = nickname;
             this.username = username;
@@ -24,10 +25,12 @@ namespace dreamskape.Users
             this.modes = modes;
             this.UID = UID;
             Program.Users.Add(UID, this);
+            this.isIntroduced = introduced;
         }
         public void introduce()
         {
             Protocol.protocolPlugin.introduceUser(nickname, username, modes, hostname, gecos, UID);
+            this.isIntroduced = true;
         }
         public void joinChannel(Channel chan)
         {

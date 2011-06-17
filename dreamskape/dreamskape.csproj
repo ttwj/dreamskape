@@ -44,12 +44,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Channel\Channel.cs" />
+    <Compile Include="Modules\Events\ChannelMessageEvent.cs" />
+    <Compile Include="Modules\Events\Event.cs" />
+    <Compile Include="Modules\Hooks.cs" />
+    <Compile Include="Modules\ModuleManager.cs" />
+    <Compile Include="Modules\ModulePlugin.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Protocol\ProtocolPlugin.cs" />
     <Compile Include="Protocol\ProtocolManager.cs" />
     <Compile Include="User\User.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

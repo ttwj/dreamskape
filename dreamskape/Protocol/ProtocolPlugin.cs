@@ -33,7 +33,7 @@ namespace dreamskape.Proto
             return timestamp;
         }
 
-        public static String generateSID()
+        public static String generateUID()
         {
             //Initiate objects & vars    
             Random random = new Random();

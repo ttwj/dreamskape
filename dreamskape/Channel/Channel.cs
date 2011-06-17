@@ -18,11 +18,11 @@ namespace dreamskape.Channels
             Users = new Dictionary<string, User>();
             Program.Channels.Add(name, this);
         }
-        public void addChannel(User user)
+        public void addToChannel(User user)
         {
             Users.Add(user.UID, user);
         }
-        public void removeChannel(User user)
+        public void removeFromChannel(User user)
         {
             if (Users.ContainsValue(user))
             {
@@ -30,6 +30,14 @@ namespace dreamskape.Channels
                 return;
             }
             Console.WriteLine("Attempted to remove non-existant user from channel " + this.name);
+        }
+        public bool containsUser(User user)
+        {
+            if (Users.ContainsValue(user))
+            {
+                return true;
+            }
+            return false;
         }
         public void Kick(User kicker, User kickee, string reason)
         {
