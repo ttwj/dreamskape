@@ -10,6 +10,7 @@ namespace dreamskape.Modules
         USER_CHANNEL_PRIVMSG,
         USER_CHANNEL_NOTICE,
         USER_MESSAGE_CLIENT,
-        USER_NOTICE_CLIENT
+        USER_NOTICE_CLIENT,
+        CLIENT_KILLED
     }
 }

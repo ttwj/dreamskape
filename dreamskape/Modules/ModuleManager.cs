@@ -79,6 +79,15 @@ namespace dreamskape.Modules
                                     }
                                     break;
                                 }
+                            case Hooks.CLIENT_KILLED:
+                                {
+                                    KillEvent me = (KillEvent)ev;
+                                    if (me.killee == client)
+                                    {
+                                        module.onClientKilled(me);
+                                    }
+                                    break;
+                                }
                         }
                     }
                 }

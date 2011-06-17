@@ -36,5 +36,10 @@ namespace dreamskape.Users
         {
             Protocol.protocolPlugin.joinUser(this, chan);
         }
+        public void kill(string reason)
+        {
+            //server kill client
+        }
+        
     }
 }

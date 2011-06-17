@@ -30,6 +30,9 @@ namespace dreamskape.Modules
         public abstract void Initialize();
         public virtual void onUserMessageChannel(ChannelMessageEvent ev) { }
         public virtual void onUserMessageClient(UserMessageEvent ev) { }
-        public virtual void onUserPartChannel(User user, Channel channel, string reason) { }
+        public virtual void onUserPartChannel() { }
+        public virtual void onClientKilled(KillEvent ev) { }
+        public virtual void onClientKill(KillEvent ev) { }
+
     }
 }

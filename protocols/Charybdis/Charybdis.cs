@@ -39,14 +39,17 @@ namespace dreamskape.Proto
                 {
                     while ((inputLine = reader.ReadLine()) != null)
                     {
-                        parseLine(inputLine);
                         Console.WriteLine("< " + inputLine);
+                        parseLine(inputLine);
+
                     }
                 }
 
             }
-            catch
+            catch (Exception e)
             {
+                Console.WriteLine("FAIL");
+                Console.WriteLine(e.ToString());
             }
         }
         public User getUserFromUID(string UID)
@@ -72,7 +75,7 @@ namespace dreamskape.Proto
                 Send("PONG " + lineArray[1]);
             }
 
-            else
+            else if (lineArray[1].Length > 1)
             {
                 switch (lineArray[1])
                 {
@@ -94,12 +97,22 @@ namespace dreamskape.Proto
                     case "UID":
                         {
                             //create new user
+                            foreach (string lol in lineArray)
+                            {
+                                Console.WriteLine(": " + lol);
+                            }
+                            Console.WriteLine("parsing nick");
                             string user_nickname = lineArray[2];
+                            Console.WriteLine("parsing mode");
                             string user_modes = lineArray[5];
+                            Console.WriteLine("parsing user");
                             string user_username = lineArray[6];
+                            Console.WriteLine("parsing host");
                             string user_host = lineArray[7];
+                            Console.WriteLine("parsing uid");
                             string user_UID = lineArray[9];
-                            string user_realname = lineArray[11].Remove(0, 1);
+                            Console.WriteLine("parsing gecos");
+                            string user_realname = lineArray[10].Remove(0, 1);
                             User newuser = new User(user_nickname, user_username, user_modes, user_host, user_realname, user_UID);
                             Console.WriteLine("Initiated new user " + newuser.nickname);
                             break;
@@ -116,7 +129,7 @@ namespace dreamskape.Proto
             Send("SVINFO 6 3 0 :" + getTimeStamp());
             hasBurst = true;
             //create user.
-            User derp = new User("nyan", "nyan", "i", "nyan.cat", "nyansall", SID + generateSID());
+            User derp = new User("nyan", "nyan", "i", "nyan.cat", "nyansall", SID + generateUID());
             derp.introduce();
             Channel lol = new Channel("#lol");
             derp.joinChannel(lol);
