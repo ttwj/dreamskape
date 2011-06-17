@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using dreamskape.Users;
 
-namespace dreamskape.Modules
+namespace dreamskape.Nickserv
 {
     public static class Help
     {
-        private static Dictionary<string, string> HelpDict;
+        public static Dictionary<string, string> HelpDict;
         public static void initHelp()
         {
             HelpDict = new Dictionary<string, string>();

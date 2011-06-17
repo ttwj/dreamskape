@@ -4,12 +4,16 @@ using System.Linq;
 using System.Text;
 using dreamskape.Modules.Events;
 using dreamskape.Channels;
+using dreamskape.Modules;
 using dreamskape.Users;
 using dreamskape.Proto;
 using dreamskape;
 using System.Net;
+using System.Data;
+using dreamskape.Databases;
 
-namespace dreamskape.Modules
+
+namespace dreamskape.Nickserv
 {
     public static class webstuff
     {
@@ -84,6 +88,27 @@ namespace dreamskape.Modules
                             }
                         }
                         nickserv.noticeUser(user, "MEME: " + Convert.ToChar(2) + webstuff.meme());
+                        break;
+                    }
+                case "REGISTER":
+                    {
+                        if ((messageArray[1].Length < 1) || (messageArray[2].Length < 1))
+                        {
+                            Console.WriteLine("wtf register fail?");
+                            nickserv.noticeUser(user, "Invalid syntax");
+                            string help;
+                            Help.HelpDict.TryGetValue("REGISTER", out help);
+                            nickserv.noticeUser(user, help);
+                            return;
+                      }
+                        if (NickDatabase.isRegistered(user))
+                        {
+                            nickserv.noticeUser(user, Convert.ToChar(2) + "Error: This nickname is already registered.");
+                        }
+                        else
+                        {
+                            nickserv.noticeUser(user, "NOT IMPLEMENTED BRO. PROBLEM?");
+                        }
                         break;
                     }
             }

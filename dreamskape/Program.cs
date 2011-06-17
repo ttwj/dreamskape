@@ -7,6 +7,8 @@ using dreamskape.Channels;
 using dreamskape.Users;
 using dreamskape.Proto;
 using dreamskape.Modules;
+using System.Data;
+using dreamskape.Databases;
 
 namespace dreamskape
 {

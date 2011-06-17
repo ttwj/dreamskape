@@ -3,3 +3,4 @@ C:\Users\Terence\Documents\Visual Studio 2010\Projects\dreamskape\dreamskape\bin
 C:\Users\Terence\Documents\Visual Studio 2010\Projects\dreamskape\dreamskape\bin\Release\dreamskape.pdb
 C:\Users\Terence\Documents\Visual Studio 2010\Projects\dreamskape\dreamskape\obj\x86\Release\dreamskape.exe
 C:\Users\Terence\Documents\Visual Studio 2010\Projects\dreamskape\dreamskape\obj\x86\Release\dreamskape.pdb
+C:\Users\Terence\Documents\Visual Studio 2010\Projects\dreamskape\dreamskape\bin\Release\dreamskape.exe.config
