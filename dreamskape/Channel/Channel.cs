@@ -16,7 +16,7 @@ namespace dreamskape.Channels
         {
             this.name = name;
             Users = new Dictionary<string, User>();
-            Program.Channels.Add(name, this);
+            Program.Channels.Add(name.ToLower(), this);
         }
         public void addToChannel(User user)
         {
@@ -39,13 +39,6 @@ namespace dreamskape.Channels
             }
             return false;
         }
-        public void Kick(User kicker, User kickee, string reason)
-        {
-            Protocol.protocolPlugin.kickUser(kicker, kickee, this, reason);
-        }
-        public void Kick(User kickee, string reason)
-        {
-            Protocol.protocolPlugin.kickUser(null, kickee, this, reason);
-        }
+
     }
 }

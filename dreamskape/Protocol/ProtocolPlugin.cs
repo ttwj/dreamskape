@@ -32,7 +32,26 @@ namespace dreamskape.Proto
             int timestamp = (int)t.TotalSeconds;
             return timestamp;
         }
-
+        public User getUserFromUID(string UID)
+        {
+            if (Program.Users.ContainsKey(UID))
+            {
+                User user;
+                Program.Users.TryGetValue(UID, out user);
+                return user;
+            }
+            return null;
+        }
+        public User getChannelFromName(string channel)
+        {
+            if (Program.Channels.ContainsKey(channel.ToLower()))
+            {
+                User user;
+                Program.Users.TryGetValue(channel.ToLower(), out user);
+                return user;
+            }
+            return null;
+        }
         public static String generateUID()
         {
             //Initiate objects & vars    
@@ -66,15 +85,17 @@ namespace dreamskape.Proto
         public virtual void joinUser(User joinee, Channel channel)
         {
         }
-        public virtual void killUser(User killee, string reason)
+        public virtual void killUser(User killee, string reason = null)
         {
         }
-        public virtual void killUser(User killer, User killee, string reason)
+        public virtual void killUser(Client killer, User killee, string reason = null)
         {
         }
-        public virtual void kickUser(User kicker, User kickee, Channel channel, string reason = null)
+        public virtual void kickUser(Client kicker, User kickee, Channel channel, string reason = null)
         {
         }
-        
+        public virtual void chanMode()
+        {
+        }
     }
 }

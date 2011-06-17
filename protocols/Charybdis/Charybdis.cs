@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 using dreamskape.Channels;
 using dreamskape.Users;
+using dreamskape.Modules;
 using System.Net.Sockets;
 
 namespace dreamskape.Proto
@@ -92,6 +93,8 @@ namespace dreamskape.Proto
                             //get rid of this user.
                             user = null;
                             Program.Users.Remove(user_UID);
+                            //call plugins :o
+                           
                             break;
                         }
                     case "UID":
@@ -101,20 +104,21 @@ namespace dreamskape.Proto
                             {
                                 Console.WriteLine(": " + lol);
                             }
-                            Console.WriteLine("parsing nick");
                             string user_nickname = lineArray[2];
-                            Console.WriteLine("parsing mode");
                             string user_modes = lineArray[5];
-                            Console.WriteLine("parsing user");
                             string user_username = lineArray[6];
-                            Console.WriteLine("parsing host");
                             string user_host = lineArray[7];
-                            Console.WriteLine("parsing uid");
                             string user_UID = lineArray[9];
-                            Console.WriteLine("parsing gecos");
                             string user_realname = lineArray[10].Remove(0, 1);
                             User newuser = new User(user_nickname, user_username, user_modes, user_host, user_realname, user_UID);
                             Console.WriteLine("Initiated new user " + newuser.nickname);
+                            
+                            break;
+                        }
+                    case "PRIVMSG":
+                        {
+                            string dest = lineArray[2];
+                            
                             break;
                         }
                 }
@@ -128,11 +132,6 @@ namespace dreamskape.Proto
             Send("SERVER " + thisserver + " 1 :Nyan IRC Services v0.1");
             Send("SVINFO 6 3 0 :" + getTimeStamp());
             hasBurst = true;
-            //create user.
-            User derp = new User("nyan", "nyan", "i", "nyan.cat", "nyansall", SID + generateUID());
-            derp.introduce();
-            Channel lol = new Channel("#lol");
-            derp.joinChannel(lol);
             return;
         }
         public override void introduceUser(string nickname, string username, string modes, string hostname, string gecos, string UID)
@@ -159,6 +158,14 @@ namespace dreamskape.Proto
                 reason = "Killed by dreamskape";
             }
             Send(SID + " KILL " + killee.UID + " :" + reason);
+        }
+        public override void kickUser(Client kicker, User kickee, Channel channel, string reason = null)
+        {
+            Send(":" + kicker.UID + " KICK " + channel.name + " " + kickee.UID + " :" + reason);
+        }
+        public override void killUser(Client killer, User killee, string reason = null)
+        {
+            Send(":" + killer.UID + " " + killee.UID + " :" + thisserver + "!" + killer.hostname + "!" + killer.username + "!" + killer.nickname + " (" + reason + ")");
         }
         
     }

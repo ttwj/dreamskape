@@ -23,7 +23,7 @@ namespace dreamskape.Modules
                 foreach (string str in Directory.GetFiles(@"modules\"))
                 {
                     FileInfo info = new FileInfo(str);
-                    if (info.Name == Program.protocol)
+                    if (info.Name.EndsWith(".dll"))
                     {
                         Console.WriteLine("Loading module " + info.Name);
                         Assembly assembly = Assembly.LoadFrom(info.FullName);
@@ -32,14 +32,13 @@ namespace dreamskape.Modules
                             if (!type.IsAbstract && (type.BaseType == typeof(ModulePlugin)))
                             {
                                 ModulePlugin plugin = (ModulePlugin)Activator.CreateInstance(type);
-                                plugin.Initialize();
                                 moduleList.Add(plugin);
                                 break;
                             }
                         }
                     }
                 }
-                Console.WriteLine("Protocol plugin loaded!");
+                Console.WriteLine("Modules loaded!");
             }
             catch (ReflectionTypeLoadException exception)
             {
@@ -49,6 +48,13 @@ namespace dreamskape.Modules
                     Console.WriteLine(exception2.ToString());
                 }
                 Console.WriteLine("Problem loading modules!");
+            }
+        }
+        public static void InitModules()
+        {
+            foreach (ModulePlugin plugin in moduleList)
+            {
+                plugin.Initialize();
             }
         }
         public static void callHook(Hooks hook, User client, Event ev = null)

@@ -1,0 +1,7 @@
+C:\Users\Terence\Documents\Visual Studio 2010\Projects\dreamskape\modules\NickServ\obj\Release\ResolveAssemblyReference.cache
+C:\Users\Terence\Documents\Visual Studio 2010\Projects\dreamskape\modules\NickServ\bin\Release\NickServ.dll
+C:\Users\Terence\Documents\Visual Studio 2010\Projects\dreamskape\modules\NickServ\bin\Release\NickServ.pdb
+C:\Users\Terence\Documents\Visual Studio 2010\Projects\dreamskape\modules\NickServ\bin\Release\dreamskape.exe
+C:\Users\Terence\Documents\Visual Studio 2010\Projects\dreamskape\modules\NickServ\bin\Release\dreamskape.pdb
+C:\Users\Terence\Documents\Visual Studio 2010\Projects\dreamskape\modules\NickServ\obj\Release\NickServ.dll
+C:\Users\Terence\Documents\Visual Studio 2010\Projects\dreamskape\modules\NickServ\obj\Release\NickServ.pdb
