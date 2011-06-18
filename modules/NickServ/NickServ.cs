@@ -42,6 +42,8 @@ namespace dreamskape.Nickserv
             Help.initHelp();
             Help.registerHelp("HELP", "Shows help, duh");
             Help.registerHelp("MEME <channel>", "Shows random MEME");
+            Help.registerHelp("REGISTER", "<password> <email>, Registers an account");
+            NickDatabase.loadRegistered();
         }
 
         public User getUserFromUID(string UID)
@@ -92,7 +94,7 @@ namespace dreamskape.Nickserv
                     }
                 case "REGISTER":
                     {
-                        if ((messageArray[1].Length < 1) || (messageArray[2].Length < 1))
+                        if (messageArray.Length < 3)
                         {
                             Console.WriteLine("wtf register fail?");
                             nickserv.noticeUser(user, "Invalid syntax");
@@ -100,14 +102,15 @@ namespace dreamskape.Nickserv
                             Help.HelpDict.TryGetValue("REGISTER", out help);
                             nickserv.noticeUser(user, help);
                             return;
-                      }
-                        if (NickDatabase.isRegistered(user))
+                        }
+                        else if (NickDatabase.isRegistered(user.nickname))
                         {
                             nickserv.noticeUser(user, Convert.ToChar(2) + "Error: This nickname is already registered.");
                         }
                         else
                         {
-                            nickserv.noticeUser(user, "NOT IMPLEMENTED BRO. PROBLEM?");
+                            NickDatabase.register(user.nickname, messageArray[2]);
+                            NickDatabase.loadRegistered();
                         }
                         break;
                     }

@@ -139,6 +139,14 @@ namespace dreamskape.Proto
                             }
                             break;
                         }
+                    case "NICK":
+                        {
+                            string senderuid = lineArray[0].Remove(0, 1);
+                            User user = getUserFromUID(senderuid);
+                            user.nickname = lineArray[2];
+                            Console.WriteLine("changed " + user.nickname);
+                            break;
+                        }
                 }
             }
 

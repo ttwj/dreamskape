@@ -21,14 +21,14 @@ namespace dreamskape.Nickserv
             foreach (DataRow row in userTable.Rows)
             {
                 NickAuths.Add(row["name"].ToString().ToLower(), row["password"].ToString());
+                Console.WriteLine(row["name"].ToString().ToLower() + " :  " + row["password"].ToString());
                 count++;
             }
             Console.WriteLine("Loaded " + count + " account entries!");
         }
-        public static bool isRegistered(User user)
+        public static bool isRegistered(string user)
         {
-            string account = user.nickname.ToLower();
-            return NickAuths.ContainsKey(account);
+            return NickAuths.ContainsKey(user);
         }
         static string sha256(string password)
         {
@@ -41,20 +41,24 @@ namespace dreamskape.Nickserv
             }
             return hash;
         }
-        public static void register(User user, string password)
+        public static void register(string user, string password)
         {
             try
             {
-                string account = user.nickname.ToLower();
+                string account = user.ToLower();
                 string hashedpass = sha256(password + "salt");
                 DataTable userTable = Database.ExecuteQuery("INSERT INTO users VALUES (" + account + ", " + hashedpass + ")");
                 NickAuths.Add(account, hashedpass);
             }
             catch (ArgumentException e)
             {
-                Console.WriteLine(user.nickname + " registered despite having registered.");
+                Console.WriteLine(user + " registered despite having registered.");
                 Console.WriteLine(e.ToString());
             }
+        }
+        public static void drop(string user, string password)
+        {
+            DataTable userTable = Database.ExecuteQuery("DELETE FROM users WHERE name = '" + sha256(password) + "';");
         }
     }
 }
