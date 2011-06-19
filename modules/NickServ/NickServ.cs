@@ -111,6 +111,7 @@ namespace dreamskape.Nickserv
                         {
                             NickDatabase.register(user.nickname, messageArray[2]);
                             NickDatabase.loadRegistered();
+                            nickserv.noticeUser(user, "Registration sucessful!");
                         }
                         break;
                     }

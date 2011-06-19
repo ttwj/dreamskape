@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using dreamskape.Databases;
 using dreamskape.Channels;
 using dreamskape.Users;
+using dreamskape.Databases;
 using System.Data;
 using System.Security.Cryptography;
+using System.Data.SQLite;
 
 namespace dreamskape.Nickserv
 {
@@ -43,22 +44,34 @@ namespace dreamskape.Nickserv
         }
         public static void register(string user, string password)
         {
-            try
+            using (SQLiteConnection cnn = new SQLiteConnection("Data Source=services.db"))
             {
-                string account = user.ToLower();
-                string hashedpass = sha256(password + "salt");
-                DataTable userTable = Database.ExecuteQuery("INSERT INTO users VALUES (" + account + ", " + hashedpass + ")");
-                NickAuths.Add(account, hashedpass);
-            }
-            catch (ArgumentException e)
-            {
-                Console.WriteLine(user + " registered despite having registered.");
-                Console.WriteLine(e.ToString());
+                using (SQLiteCommand cmd = cnn.CreateCommand())
+                {
+                    cmd.CommandText = "INSERT INTO users (name,password) VALUES(@username, @pass)";
+                    cmd.Parameters.AddWithValue("@username", user.ToLower());
+                    cmd.Parameters.AddWithValue("@pass", sha256(password));
+
+                    cnn.Open();
+                    cmd.ExecuteNonQuery();
+                    cnn.Close();
+                }
             }
         }
         public static void drop(string user, string password)
         {
-            DataTable userTable = Database.ExecuteQuery("DELETE FROM users WHERE name = '" + sha256(password) + "';");
+            using (SQLiteConnection cnn = new SQLiteConnection("Data Source=services.db"))
+            {
+                using (SQLiteCommand cmd = cnn.CreateCommand())
+                {
+                    cmd.CommandText = "DELETE FROM users (name,password) WHERE user = '@user' AND password = '@password'";
+                    cmd.Parameters.AddWithValue("@user", user.ToLower());
+                    cmd.Parameters.AddWithValue("@password", sha256(password));
+                    cnn.Open();
+                    cmd.ExecuteNonQuery();
+                    cnn.Close();
+                }
+            }
         }
     }
 }
