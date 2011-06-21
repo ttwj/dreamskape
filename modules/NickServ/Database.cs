@@ -13,24 +13,34 @@ namespace dreamskape.Nickserv
 {
     public class NickDatabase 
     {
-        public static Dictionary<string, string> NickAuths;
+        public static Dictionary<string, Account> NickAccounts;
         public static void loadRegistered()
         {
-            NickAuths = new Dictionary<string, string>();
+            NickAccounts = new Dictionary<string, Account>();
             DataTable userTable = Database.ExecuteQuery("SELECT * FROM users");
             int count = 0;
             foreach (DataRow row in userTable.Rows)
             {
-                NickAuths.Add(row["name"].ToString().ToLower(), row["password"].ToString());
+                Account account = new Account(null);
+                account.Password = row["password"].ToString();
+                account.User = row["name"].ToString();
+                NickAccounts.Add(account.User, account);
                 Console.WriteLine(row["name"].ToString().ToLower() + " :  " + row["password"].ToString());
                 count++;
             }
             Console.WriteLine("Loaded " + count + " account entries!");
         }
+        public static Account getAccountFromUser(User user)
+        {
+            if (NickAccounts.ContainsKey(user.nickname.ToLower()))
+            {
+                return NickAccounts[user.nickname.ToLower()];
+            }
+            return null;
+        }
         public static bool isRegistered(User user)
         {
-            
-            return NickAuths.ContainsKey(user.nickname.ToLower());
+            return NickAccounts.ContainsKey(user.nickname.ToLower());
         }
         public static string sha256(string password)
         {
@@ -43,17 +53,21 @@ namespace dreamskape.Nickserv
             }
             return hash;
         }
-        public static void register(Account usr, string hashedpass)
+        public static void register(Account account, string hashedpass)
         {
-            string user = usr.nickname.ToLower();
+            User usr = account.user;
             using (SQLiteConnection cnn = new SQLiteConnection("Data Source=services.db"))
             {
                 using (SQLiteCommand cmd = cnn.CreateCommand())
                 {
                     cmd.CommandText = "INSERT INTO users (name,password) VALUES(@username, @pass)";
-                    cmd.Parameters.AddWithValue("@username", user.ToLower());
+                    cmd.Parameters.AddWithValue("@username", usr.nickname.ToLower());
                     cmd.Parameters.AddWithValue("@pass", hashedpass);
                     cnn.Open();
+                    account.Password = hashedpass;
+                    account.User = account.user.nickname.ToLower();
+                    NickAccounts.Add(account.User, account);
+                    
                     cmd.ExecuteNonQuery();
                     cnn.Close();
                 }
@@ -61,7 +75,7 @@ namespace dreamskape.Nickserv
         }
         public static void drop(Account usr, string hashedpass)
         {
-            string user = usr.nickname.ToLower();
+            string user = usr.user.nickname.ToLower();
             using (SQLiteConnection cnn = new SQLiteConnection("Data Source=services.db"))
             {
                 using (SQLiteCommand cmd = cnn.CreateCommand())

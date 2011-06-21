@@ -115,10 +115,8 @@ namespace dreamskape.Nickserv
                             }
                             else
                             {
-
-                                NickDatabase.register((Account)user, messageArray[1]);
-                                NickDatabase.loadRegistered();
-                                nickserv.noticeUser(user, "Registration sucessful!");
+                                Account account = new Account(user);
+                                account.register(messageArray[1]);
                             }
                             break;
                         }
@@ -133,13 +131,18 @@ namespace dreamskape.Nickserv
                                 return;
                             }
                             else if (!NickDatabase.isRegistered(user)) {
-                                nickserv.noticeUser(user, Convert.ToChar(2) + "Error: This nickname is not registered");
+                                nickserv.noticeUser(user, Chars.bold + "Error: This nickname is not registered");
                                 nickserv.noticeUser(user, "Use /msg NickServ REGISTER to register");
                                 return;
                             }
+                            else if (user.loggedIn)
+                            {
+                                nickserv.noticeUser(user, Chars.bold + "You are already logged in.");
+                            }
                             else
                             {
-
+                                Account account = NickDatabase.getAccountFromUser(user);
+                                account.login(messageArray[1]);
                             }
                             break;
                         }
@@ -147,13 +150,37 @@ namespace dreamskape.Nickserv
                         {
                             if (messageArray.Length < 3)
                             {
-
+                                nickserv.noticeUser(user, "Not implemented yet");
+                            }
+                            break;
+                        }
+                    case "VHOST":
+                        {
+                            switch (messageArray[1])
+                            {
+                                case "REQUEST":
+                                    {
+                                        break;
+                                    }
+                                case "ON":
+                                    {
+                                        break;
+                                    }
+                                case "OFF":
+                                    {
+                                        break;
+                                    }
+                                default:
+                                    {
+                                        nickserv.noticeUser(user, "Unknown command, " + Chars.bold + "/msg NickServ HELP VHOST" + Chars.bold + " for a listing of commands.");
+                                        break;
+                                    }
                             }
                             break;
                         }
                     default:
                         {
-                            nickserv.noticeUser(user, "Invalid command, " + Chars.bold + "/msg NickServ HELP" + Chars.bold + " for a listing of commands.");
+                            nickserv.noticeUser(user, "Unknown command, " + Chars.bold + "/msg NickServ HELP" + Chars.bold + " for a listing of commands.");
                             break;
                         }
                 }

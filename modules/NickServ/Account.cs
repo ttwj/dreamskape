@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using System.Text;
 using System.Data;
@@ -9,7 +10,7 @@ using System.Security.Cryptography;
 
 namespace dreamskape.Nickserv
 {
-    public class Account : User
+    public class Account 
     {
         public string User;
         public string Password;
@@ -18,10 +19,11 @@ namespace dreamskape.Nickserv
         public bool show;
         public string[] Groups;
         public string Vhost;
-        public bool LoggedIn;
+        public User user;
         public Client ns = NickServ.nickserv;
-        public Account(User user) : base (user.nickname, user.username, user.modes, user.hostname, user.gecos, user.UID)
+        public Account(User user)
         {
+            this.user = user;
         }
         static string sha256(string password)
         {
@@ -36,33 +38,33 @@ namespace dreamskape.Nickserv
         }
         public void login(string password)
         {
-            string dbpass;
-            NickDatabase.NickAuths.TryGetValue(this.nickname.ToLower(), out dbpass);
             Console.WriteLine(password);
-            if (NickDatabase.sha256(password) == dbpass)
+            if (NickDatabase.sha256(password) == Password)
             {
-                ns.noticeUser((User)this, "Login sucessful");
+                ns.noticeUser(this.user, "Login sucessful");
+                this.user.loggedIn = true;
             }
             else
             {
-                ns.noticeUser((User)this, Convert.ToChar(2) + "Invalid password.");
+                ns.noticeUser(this.user, Convert.ToChar(2) + "Invalid password.");
             }
         }
         public void register(string password)
         {
             this.Password = sha256(password);
-            NickDatabase.register(this, this.Password);
+            NickDatabase.register(this, Password);
+            ns.noticeUser(this.user, "Registration sucessful.");
         }
         public void drop(string password)
         {
             string hashedpass = sha256(password);
             if (this.Password != hashedpass)
             {
-                ns.noticeUser((User)this, Chars.bold + "Error: Invalid password");
+                ns.noticeUser(this.user, Chars.bold + "Error: Invalid password");
                 return;
             }
             NickDatabase.drop(this, hashedpass);
-            ns.noticeUser((User)this, "Your account has been dropped sucessfully.");
+            ns.noticeUser(this.user, "Your account has been dropped sucessfully.");
         }
     }
 }

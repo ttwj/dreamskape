@@ -46,11 +46,18 @@ namespace dreamskape.Proto
                 }
 
             }
+            catch (System.Net.Sockets.SocketException e)
+            {
+                Console.WriteLine("A socket exception occured, reconneting in 5 seconds.");
+                Console.WriteLine("Exception: " + e.ToString());
+                System.Threading.Thread.Sleep(5000);
+                this.Connect();
+            }
+
             catch (Exception e)
             {
-                Console.WriteLine("FAIL");
+                Console.WriteLine("An unexpected error occured.");
                 Console.WriteLine(e.ToString());
-                
             }
         }
         

@@ -11,6 +11,7 @@ namespace dreamskape.Channels
     public class Channel
     {
         public string name;
+        public bool registered = false;
         public Dictionary<string, User> Users;
         public Channel(string name)
         {
