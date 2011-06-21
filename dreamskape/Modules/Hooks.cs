@@ -11,6 +11,8 @@ namespace dreamskape.Modules
         USER_CHANNEL_NOTICE,
         USER_MESSAGE_CLIENT,
         USER_NOTICE_CLIENT,
+        USER_NICKCHANGE,
+        USER_CONNECT,
         CLIENT_KILLED
     }
 }

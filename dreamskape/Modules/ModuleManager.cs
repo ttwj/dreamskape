@@ -95,6 +95,24 @@ namespace dreamskape.Modules
                                     }
                                     break;
                                 }
+                            case Hooks.USER_CONNECT:
+                                {
+                                    UserEvent me = (UserEvent)ev;
+                                    if (me.user != client)
+                                    {
+                                        module.onUserConnect(me);
+                                    }
+                                    break;
+                                }
+                            case Hooks.USER_NICKCHANGE:
+                                {
+                                    UserNickChangeEvent me = (UserNickChangeEvent)ev;
+                                    if (me.user != client)
+                                    {
+                                        module.onUserNickChange(me);
+                                    }
+                                    break;
+                                }
                         }
                     }
                 }

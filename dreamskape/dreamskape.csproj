@@ -53,7 +53,9 @@
     <Compile Include="Modules\Events\ChannelMessageEvent.cs" />
     <Compile Include="Modules\Events\Event.cs" />
     <Compile Include="Modules\Events\KillEvent.cs" />
+    <Compile Include="Modules\Events\UserConnectEvent.cs" />
     <Compile Include="Modules\Events\UserMessageEvent.cs" />
+    <Compile Include="Modules\Events\UserNickChangeEvent.cs" />
     <Compile Include="Modules\Hooks.cs" />
     <Compile Include="Modules\ModuleManager.cs" />
     <Compile Include="Modules\ModulePlugin.cs" />

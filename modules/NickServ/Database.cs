@@ -27,11 +27,12 @@ namespace dreamskape.Nickserv
             }
             Console.WriteLine("Loaded " + count + " account entries!");
         }
-        public static bool isRegistered(string user)
+        public static bool isRegistered(User user)
         {
-            return NickAuths.ContainsKey(user);
+            
+            return NickAuths.ContainsKey(user.nickname.ToLower());
         }
-        static string sha256(string password)
+        public static string sha256(string password)
         {
             SHA256Managed crypt = new SHA256Managed();
             string hash = String.Empty;
@@ -42,31 +43,32 @@ namespace dreamskape.Nickserv
             }
             return hash;
         }
-        public static void register(string user, string password)
+        public static void register(Account usr, string hashedpass)
         {
+            string user = usr.nickname.ToLower();
             using (SQLiteConnection cnn = new SQLiteConnection("Data Source=services.db"))
             {
                 using (SQLiteCommand cmd = cnn.CreateCommand())
                 {
                     cmd.CommandText = "INSERT INTO users (name,password) VALUES(@username, @pass)";
                     cmd.Parameters.AddWithValue("@username", user.ToLower());
-                    cmd.Parameters.AddWithValue("@pass", sha256(password));
-
+                    cmd.Parameters.AddWithValue("@pass", hashedpass);
                     cnn.Open();
                     cmd.ExecuteNonQuery();
                     cnn.Close();
                 }
             }
         }
-        public static void drop(string user, string password)
+        public static void drop(Account usr, string hashedpass)
         {
+            string user = usr.nickname.ToLower();
             using (SQLiteConnection cnn = new SQLiteConnection("Data Source=services.db"))
             {
                 using (SQLiteCommand cmd = cnn.CreateCommand())
                 {
                     cmd.CommandText = "DELETE FROM users (name,password) WHERE user = '@user' AND password = '@password'";
                     cmd.Parameters.AddWithValue("@user", user.ToLower());
-                    cmd.Parameters.AddWithValue("@password", sha256(password));
+                    cmd.Parameters.AddWithValue("@password", hashedpass);
                     cnn.Open();
                     cmd.ExecuteNonQuery();
                     cnn.Close();

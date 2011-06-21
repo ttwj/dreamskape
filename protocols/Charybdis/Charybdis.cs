@@ -143,8 +143,12 @@ namespace dreamskape.Proto
                         {
                             string senderuid = lineArray[0].Remove(0, 1);
                             User user = getUserFromUID(senderuid);
+                            string oldnick = user.nickname;
                             user.nickname = lineArray[2];
                             Console.WriteLine("changed " + user.nickname);
+                            UserNickChangeEvent ev = new UserNickChangeEvent(user, oldnick, lineArray[2]);
+                            Console.WriteLine("calling hook!");
+                            Module.callHook(Hooks.USER_NICKCHANGE, null, ev);
                             break;
                         }
                 }

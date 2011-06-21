@@ -38,11 +38,15 @@ namespace dreamskape.Nickserv
             nickserv.introduce();
             this.registerClient(nickserv);
             this.registerHook(Hooks.USER_MESSAGE_CLIENT);
+            this.registerHook(Hooks.USER_CONNECT);
+            this.registerHook(Hooks.USER_NICKCHANGE);
             //help
             Help.initHelp();
             Help.registerHelp("HELP", "Shows help, duh");
             Help.registerHelp("MEME <channel>", "Shows random MEME");
             Help.registerHelp("REGISTER", "<password> <email>, Registers an account");
+            Help.registerHelp("LOGIN", "<password> Logs you in to your account");
+            Help.registerHelp("DROP", "<password> Drops your account, NOT " + Convert.ToChar(2) + "DEGROUP");
             NickDatabase.loadRegistered();
         }
 
@@ -71,52 +75,113 @@ namespace dreamskape.Nickserv
             User user = ev.sender; 
             string message = ev.message;
             string[] messageArray = message.Split(' ');
-            switch (messageArray[0].ToUpper())
+            try
             {
-                case "HELP":
-                    {
-                        Help.showHelp(user);
-                        break;
-                    }
-                case "MEME":
-                    {
-                        if (messageArray[1].Length > 1)
+                switch (messageArray[0].ToUpper())
+                {
+                    case "HELP":
                         {
-                            Channel chan = getChannelFromName(messageArray[1]);
-                            if (chan != null)
+                            Help.showHelp(user);
+                            break;
+                        }
+                    case "MEME":
+                        {
+                            if (messageArray[1].Length > 1)
                             {
-                                nickserv.noticeUser(user, Convert.ToChar(2) + "NO SHITZ HERE FOOL!");
+                                Channel chan = getChannelFromName(messageArray[1]);
+                                if (chan != null)
+                                {
+                                    nickserv.noticeUser(user, Convert.ToChar(2) + "NO SHITZ HERE FOOL!");
+                                    return;
+                                }
+                            }
+                            nickserv.noticeUser(user, "MEME: " + Convert.ToChar(2) + webstuff.meme());
+                            break;
+                        }
+                    case "REGISTER":
+                        {
+                            if (messageArray.Length < 3)
+                            {
+                                Console.WriteLine("wtf register fail?");
+                                nickserv.noticeUser(user, "Invalid syntax");
+                                string help;
+                                Help.HelpDict.TryGetValue("REGISTER", out help);
+                                nickserv.noticeUser(user, help);
                                 return;
                             }
+                            else if (NickDatabase.isRegistered(user))
+                            {
+                                nickserv.noticeUser(user, Convert.ToChar(2) + "Error: This nickname is already registered.");
+                            }
+                            else
+                            {
+
+                                NickDatabase.register((Account)user, messageArray[1]);
+                                NickDatabase.loadRegistered();
+                                nickserv.noticeUser(user, "Registration sucessful!");
+                            }
+                            break;
                         }
-                        nickserv.noticeUser(user, "MEME: " + Convert.ToChar(2) + webstuff.meme());
-                        break;
-                    }
-                case "REGISTER":
-                    {
-                        if (messageArray.Length < 3)
+                    case "LOGIN":
                         {
-                            Console.WriteLine("wtf register fail?");
-                            nickserv.noticeUser(user, "Invalid syntax");
-                            string help;
-                            Help.HelpDict.TryGetValue("REGISTER", out help);
-                            nickserv.noticeUser(user, help);
-                            return;
+                            if (messageArray.Length < 2)
+                            {
+                                nickserv.noticeUser(user, "Invalid syntax");
+                                string help;
+                                Help.HelpDict.TryGetValue("LOGIN", out help);
+                                nickserv.noticeUser(user, help);
+                                return;
+                            }
+                            else if (!NickDatabase.isRegistered(user)) {
+                                nickserv.noticeUser(user, Convert.ToChar(2) + "Error: This nickname is not registered");
+                                nickserv.noticeUser(user, "Use /msg NickServ REGISTER to register");
+                                return;
+                            }
+                            else
+                            {
+
+                            }
+                            break;
                         }
-                        else if (NickDatabase.isRegistered(user.nickname))
+                    case "DROP":
                         {
-                            nickserv.noticeUser(user, Convert.ToChar(2) + "Error: This nickname is already registered.");
+                            if (messageArray.Length < 3)
+                            {
+
+                            }
+                            break;
                         }
-                        else
+                    default:
                         {
-                            NickDatabase.register(user.nickname, messageArray[2]);
-                            NickDatabase.loadRegistered();
-                            nickserv.noticeUser(user, "Registration sucessful!");
+                            nickserv.noticeUser(user, "Invalid command, " + Chars.bold + "/msg NickServ HELP" + Chars.bold + " for a listing of commands.");
+                            break;
                         }
-                        break;
-                    }
+                }
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("FAIL " + e.ToString());  
             }
             
+        }
+        public override void onUserNickChange(UserNickChangeEvent ev)
+        {
+            User user = ev.user;
+            if (NickDatabase.isRegistered(user))
+            {
+                nickserv.noticeUser(user, "This account is registered, type");
+                nickserv.noticeUser(user , Chars.bold + "/msg NickServ LOGIN <password>" + Chars.bold + " to login");
+            }
+        }
+        public override void onUserConnect(UserEvent ev)
+        {
+            User user = ev.user;
+            if (NickDatabase.isRegistered(user))
+            {
+                nickserv.noticeUser(user, "This account is registered, type");
+                nickserv.noticeUser(user, Chars.bold + "/msg NickServ LOGIN <password>" + Chars.bold + " to login");
+            }
         }
     }
 }

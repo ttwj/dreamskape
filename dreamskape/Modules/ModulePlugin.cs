@@ -37,6 +37,8 @@ namespace dreamskape.Modules
         public virtual void onUserPartChannel() { }
         public virtual void onClientKilled(KillEvent ev) { }
         public virtual void onClientKill(KillEvent ev) { }
+        public virtual void onUserConnect(UserEvent ev) { }
+        public virtual void onUserNickChange(UserNickChangeEvent ev) { }
 
     }
 }
