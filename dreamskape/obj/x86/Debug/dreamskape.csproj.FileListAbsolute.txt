@@ -1,0 +1,6 @@
+C:\Users\Terence\Documents\Visual Studio 2010\Projects\dreamskape\dreamskape\bin\Debug\dreamskape.exe.config
+C:\Users\Terence\Documents\Visual Studio 2010\Projects\dreamskape\dreamskape\bin\Debug\dreamskape.exe
+C:\Users\Terence\Documents\Visual Studio 2010\Projects\dreamskape\dreamskape\bin\Debug\dreamskape.pdb
+C:\Users\Terence\Documents\Visual Studio 2010\Projects\dreamskape\dreamskape\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Terence\Documents\Visual Studio 2010\Projects\dreamskape\dreamskape\obj\x86\Debug\dreamskape.exe
+C:\Users\Terence\Documents\Visual Studio 2010\Projects\dreamskape\dreamskape\obj\x86\Debug\dreamskape.pdb

@@ -65,6 +65,7 @@ namespace dreamskape.Modules
                 {
                     if (module.moduleHooks.Contains(hook))
                     {
+                        Console.WriteLine("hook " + hook + " : " + module.ToString());
                         switch (hook)
                         {
                             case Hooks.USER_CHANNEL_PRIVMSG:
@@ -78,11 +79,14 @@ namespace dreamskape.Modules
                                 }
                             case Hooks.USER_MESSAGE_CLIENT:
                                 {
-                                    Console.WriteLine("message called");
-                                    UserMessageEvent me = (UserMessageEvent)ev;
-                                    if (me.sendee == client)
+                                    if (Proto.Protocol.protocolPlugin.burstComplete)
                                     {
-                                        module.onUserMessageClient(me);
+                                        Console.WriteLine("message called");
+                                        UserMessageEvent me = (UserMessageEvent)ev;
+                                        if (module.moduleClient == client)
+                                        {
+                                            module.onUserMessageClient(me);
+                                        }
                                     }
                                     break;
                                 }
@@ -97,27 +101,79 @@ namespace dreamskape.Modules
                                 }
                             case Hooks.USER_CONNECT:
                                 {
-                                    UserEvent me = (UserEvent)ev;
-                                    if (me.user != client)
+                                    if (Proto.Protocol.protocolPlugin.burstComplete)
                                     {
-                                        module.onUserConnect(me);
+                                        UserEvent me = (UserEvent)ev;
+                                        if (me.user != client)
+                                        {
+                                            module.onUserConnect(me);
+                                        }
                                     }
                                     break;
                                 }
                             case Hooks.USER_NICKCHANGE:
                                 {
-                                    UserNickChangeEvent me = (UserNickChangeEvent)ev;
-                                    if (me.user != client)
+                                    if (Proto.Protocol.protocolPlugin.burstComplete)
                                     {
-                                        module.onUserNickChange(me);
+                                        UserNickChangeEvent me = (UserNickChangeEvent)ev;
+                                        if (me.user != client)
+                                        {
+                                            module.onUserNickChange(me);
+                                        }
                                     }
+                                    break;
+                                }
+                            case Hooks.USER_IDENTIFY:
+                                {
+                                    UserEvent me = (UserEvent)ev;
+                                    module.onUserIdentify(me);
+                                    break;
+                                }
+                            case Hooks.CHANNEL_LOG:
+                                {
+                                    ChannelLogEvent me = (ChannelLogEvent)ev;
+                                    module.onChannelLog(me);
+                                    break;
+                                }
+                            case Hooks.CLIENT_INTRO:
+                                {
+                                    ClientIntroduceEvent me = (ClientIntroduceEvent)ev;
+                                    Console.WriteLine("Client " + me.client.nickname + " introduced!");
+                                    module.onClientIntroduce(me);
+                                    break;
+                                }
+                            case Hooks.SERVER_BURST_START:
+                                {
+                                    module.onServerBurstStart();
+                                    break;
+                                }
+                            case Hooks.SERVER_BURST_END:
+                                {
+                                    Console.WriteLine("server burst end");
+                                    module.onServerBurstEnd();
+                                    break;
+                                }
+                            case Hooks.USER_BURST_CONNECT:
+                                {
+                                    UserEvent me = (UserEvent) ev;
+                                    if (!Proto.Protocol.protocolPlugin.burstComplete)
+                                    {
+                                        module.onUserBurstConnect(me);
+                                    }
+                                    break;
+                                }
+                            case Hooks.USER_IDENTIFY_FAIL:
+                                {
+                                    UserEvent me = (UserEvent)ev;
+                                    module.onUserIdentifyFail(me);
                                     break;
                                 }
                         }
                     }
                 }
-                catch
+                catch (Exception e) 
                 {
+                    Console.WriteLine(e.ToString());
                 }
             }
         }

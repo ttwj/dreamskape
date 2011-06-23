@@ -34,11 +34,10 @@ namespace dreamskape.Nickserv
         public static Client nickserv;
         public override void Initialize()
         {
-            nickserv = new Client("NickServ", "NickServ", "a", "Nick.Serv", "Nickname management service", generateUID());
-            nickserv.introduce();
-            this.registerClient(nickserv);
+            this.registerHook(Hooks.SERVER_BURST_START);
             this.registerHook(Hooks.USER_MESSAGE_CLIENT);
             this.registerHook(Hooks.USER_CONNECT);
+            this.registerHook(Hooks.USER_BURST_CONNECT);
             this.registerHook(Hooks.USER_NICKCHANGE);
             //help
             Help.initHelp();
@@ -49,27 +48,13 @@ namespace dreamskape.Nickserv
             Help.registerHelp("DROP", "<password> Drops your account, NOT " + Convert.ToChar(2) + "DEGROUP");
             NickDatabase.loadRegistered();
         }
+        public override void onServerBurstStart()
+        {
+            nickserv = new Client("NickServ", "NickServ", "S", "Nick.Serv", "Nickname Management Services", generateUID());
+            nickserv.introduce();
+            this.registerClient(nickserv);
+        }
 
-        public User getUserFromUID(string UID)
-        {
-            if (Program.Users.ContainsKey(UID))
-            {
-                User user;
-                Program.Users.TryGetValue(UID, out user);
-                return user;
-            }
-            return null;
-        }
-        public Channel getChannelFromName(string channel)
-        {
-            if (Program.Channels.ContainsKey(channel.ToLower()))
-            {
-                Channel chan;
-                Program.Channels.TryGetValue(channel.ToLower(), out chan);
-                return chan;
-            }
-            return null;
-        }
         public override void onUserMessageClient(UserMessageEvent ev)
         {
             User user = ev.sender; 
@@ -105,6 +90,7 @@ namespace dreamskape.Nickserv
                                 Console.WriteLine("wtf register fail?");
                                 nickserv.noticeUser(user, "Invalid syntax");
                                 string help;
+
                                 Help.HelpDict.TryGetValue("REGISTER", out help);
                                 nickserv.noticeUser(user, help);
                                 return;
@@ -142,6 +128,7 @@ namespace dreamskape.Nickserv
                             else
                             {
                                 Account account = NickDatabase.getAccountFromUser(user);
+                                account.user = user;
                                 account.login(messageArray[1]);
                             }
                             break;
@@ -199,6 +186,19 @@ namespace dreamskape.Nickserv
             {
                 nickserv.noticeUser(user, "This account is registered, type");
                 nickserv.noticeUser(user , Chars.bold + "/msg NickServ LOGIN <password>" + Chars.bold + " to login");
+                Account account = NickDatabase.getAccountFromUser(user);
+                account.user = user;
+            }
+        }
+        public override void onUserBurstConnect(UserEvent ev)
+        {
+            User user = ev.user;
+            if (NickDatabase.isRegistered(user))
+            {
+                nickserv.noticeUser(user, "This account is registered, type");
+                nickserv.noticeUser(user, Chars.bold + "/msg NickServ LOGIN <password>" + Chars.bold + " to login");
+                Account account = NickDatabase.getAccountFromUser(user);
+                account.user = user;
             }
         }
         public override void onUserConnect(UserEvent ev)
@@ -208,6 +208,8 @@ namespace dreamskape.Nickserv
             {
                 nickserv.noticeUser(user, "This account is registered, type");
                 nickserv.noticeUser(user, Chars.bold + "/msg NickServ LOGIN <password>" + Chars.bold + " to login");
+                Account account = NickDatabase.getAccountFromUser(user);
+                account.user = user;
             }
         }
     }

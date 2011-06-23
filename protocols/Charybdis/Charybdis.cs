@@ -15,7 +15,6 @@ namespace dreamskape.Proto
     public class charybdis : ProtocolPlugin
     {
         private static StreamWriter writer;
-
         public override void Send(string message)
         {
             writer.WriteLine(message);
@@ -60,21 +59,26 @@ namespace dreamskape.Proto
                 Console.WriteLine(e.ToString());
             }
         }
-        
+
         public void parseLine(string line)
         {
             string[] lineArray = line.Split(' ');
             if (!hasBurst)
             {
                 burst();
-                Module.InitModules();
+                Module.callHook(Hooks.SERVER_BURST_START, null, null);
             }
             string lineStart = lineArray[0];
             if (lineStart == "PING")
             {
                 Send("PONG " + lineArray[1]);
+                if (burstComplete == false)
+                {
+                    Console.WriteLine("calling hook burst_Complete ===");
+                    Module.callHook(Hooks.SERVER_BURST_END, null, null);
+                    burstComplete = true;
+                }
             }
-
             else if (lineArray[1].Length > 1)
             {
                 switch (lineArray[1])
@@ -93,7 +97,34 @@ namespace dreamskape.Proto
                             user = null;
                             Program.Users.Remove(user_UID);
                             //call plugins :o
-                           
+
+                            break;
+                        }
+                    case "SJOIN":
+                        {
+                            Channel channel = getChannelFromName(lineArray[3]);
+                            if (channel == null)
+                            {
+                                channel = new Channel(lineArray[3], int.Parse(lineArray[2]));
+                            }
+                            //get the user..
+                            Regex users = new Regex(@":(.*) SJOIN (.*):(.*)");
+                            Match match = users.Match(line);
+                            string[] userStringArray = match.Groups[3].Value.Split(' ');
+                            foreach (string user in userStringArray)
+                            {
+                                string usr;
+                                if (user.StartsWith("@") || user.StartsWith("+"))
+                                {
+                                    usr = user.Remove(0, 1);
+                                }
+                                else
+                                {
+                                    usr = user;
+                                }
+                                User u = getUserFromUID(usr);
+                                channel.addToChannel(u);
+                            }
                             break;
                         }
                     case "UID":
@@ -111,7 +142,9 @@ namespace dreamskape.Proto
                             string user_realname = lineArray[10].Remove(0, 1);
                             User newuser = new User(user_nickname, user_username, user_modes, user_host, user_realname, user_UID);
                             Console.WriteLine("Initiated new user " + newuser.nickname);
-                            
+                            UserEvent ev = new UserEvent(newuser);
+                            Module.callHook(Hooks.USER_CONNECT, null, ev);
+                            Module.callHook(Hooks.USER_BURST_CONNECT, null, ev);
                             break;
                         }
                     case "PRIVMSG":
@@ -158,6 +191,13 @@ namespace dreamskape.Proto
                             Module.callHook(Hooks.USER_NICKCHANGE, null, ev);
                             break;
                         }
+                    case "MODE":
+                        {
+                            string senderuid = lineArray[0].Remove(0, 1);
+                            User user = getUserFromUID(senderuid);
+                            user.modes = user.modes + lineArray[3].Remove(0, 1);
+                            break;
+                        }
                 }
             }
 
@@ -176,11 +216,11 @@ namespace dreamskape.Proto
             //plz dun fuck up plz :(
             Send(":" + SID + " UID " + nickname + " 1 " + getTimeStamp() + " +" + modes + " " + username + " " + hostname + " 127.0.0.1 " + UID + " :" + gecos);
         }
-        public override void msgUser(User sender, User sendee, string message)
+        public override void msgUser(Client sender, User sendee, string message)
         {
             Send(":" + sender.UID + " PRIVMSG " + sendee.UID + " :" + message);
         }
-        public override void noticeUser(User sender, User sendee, string message)
+        public override void noticeUser(Client sender, User sendee, string message)
         {
             Send(":" + sender.UID + " NOTICE " + sendee.UID + " :" + message);
         }
@@ -204,6 +244,46 @@ namespace dreamskape.Proto
         {
             Send(":" + killer.UID + " " + killee.UID + " :" + thisserver + "!" + killer.hostname + "!" + killer.username + "!" + killer.nickname + " (" + reason + ")");
         }
+        public override void msgChannel(Client sender, Channel channel, string message)
+        {
+            Console.WriteLine(":" + sender.UID + " PRIVMSG " + channel.name + " :" + message);
+            Send(":" + sender.UID + " PRIVMSG " + channel.name + " :" + message);
+        }
+        public override void noticeChannel(Client sender, Channel channel, string message)
+        {
+            Send(":" + sender.UID + " NOTICE " + channel.name + " :" + message);
+        }
+        public override void chanMode(Client sender, Channel channel, string modes)
+        {
+            Send(":" + sender.UID + " TMODE " + getTimeStamp() + " " + channel.name + " " + modes);
+        }
+        public override void chanMode(Client sender, Channel channel, User dest, string modes)
+        {
+            Send(":" + sender.UID + " TMODE " + getTimeStamp() + " " + channel.name + " " + modes + " " + dest.UID);
+        }
+        public override void joinChannelMode(Client client, Channel channel, string modes)
+        {
+            Send(":" + SID + " SJOIN " + channel.TS + " " + channel.name + " " + modes + " :" + client.UID);
+        }
         
+        public override void joinChannelMode(Client client, Channel channel, User dest, string modes)
+        {
+            if (modes.StartsWith("+"))
+            {
+                if (modes.Contains('o'))
+                {
+                    Send("SJOIN " + channel.TS + " " + channel.name + " + :@" + client.UID);
+                }
+                else if (modes.Contains('v'))
+                {
+                    Send("SJOIN " + channel.TS + " " + channel.name + " + :+" + client.UID);
+                }
+            }
+            else
+            {
+                Send(":" + client.UID + " TMODE " + getTimeStamp() + " " + channel.name + " " + modes + " " + dest.UID);
+            }
+            
+        }
     }
 }

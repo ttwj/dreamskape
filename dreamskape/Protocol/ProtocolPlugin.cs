@@ -10,6 +10,7 @@ namespace dreamskape.Proto
     public abstract class ProtocolPlugin
     {
         public bool hasBurst = false;
+        public bool burstComplete = false;
         public string server;
         public string thisserver;
         public int port;
@@ -52,10 +53,12 @@ namespace dreamskape.Proto
             }
             return null;
         }
+        public static int UIDCount = 100000;
+        //yea, math.
         public static String generateUID()
         {
             //Initiate objects & vars    
-            Random random = new Random();
+            /*Random random = new Random();
             String randomString = "";
             int randNumber;
             int length = 6;
@@ -71,15 +74,17 @@ namespace dreamskape.Proto
                 randomString = randomString + (char)randNumber;
             }
             //return the random string
-            return randomString.ToUpper();
+            return randomString.ToUpper();*/
+            UIDCount++;
+            return UIDCount.ToString();
         }
         public virtual void introduceUser(string nickname, string username, string modes, string hostname, string gecos, string UID)
         {
         }
-        public virtual void msgUser(User sender, User sendee, string message)
+        public virtual void msgUser(Client sender, User sendee, string message)
         {
         }
-        public virtual void noticeUser(User sender, User sendee, string message)
+        public virtual void noticeUser(Client sender, User sendee, string message)
         {
         }
         public virtual void joinUser(User joinee, Channel channel)
@@ -94,7 +99,22 @@ namespace dreamskape.Proto
         public virtual void kickUser(Client kicker, User kickee, Channel channel, string reason = null)
         {
         }
-        public virtual void chanMode()
+        public virtual void chanMode(Client sender, Channel channel, User dest, string modes)
+        {
+        }
+        public virtual void chanMode(Client sender, Channel channel, string modes)
+        {
+        }
+        public virtual void msgChannel(Client sender, Channel channel, string message)
+        {
+        }
+        public virtual void noticeChannel(Client sender, Channel channel, string message)
+        {
+        }
+        public virtual void joinChannelMode(Client client, Channel channel, string modes)
+        {
+        }
+        public virtual void joinChannelMode(Client client, Channel channel, User dest, string modes)
         {
         }
     }

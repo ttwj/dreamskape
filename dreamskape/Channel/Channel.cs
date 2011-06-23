@@ -13,11 +13,17 @@ namespace dreamskape.Channels
         public string name;
         public bool registered = false;
         public Dictionary<string, User> Users;
-        public Channel(string name)
+        public int TS;
+        public Channel(string name, int TS = 0)
         {
             this.name = name;
+            this.TS = TS;
             Users = new Dictionary<string, User>();
             Program.Channels.Add(name.ToLower(), this);
+        }
+        public void updateTS(int TS)
+        {
+            this.TS = TS;
         }
         public void addToChannel(User user)
         {

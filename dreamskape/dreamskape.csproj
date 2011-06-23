@@ -49,6 +49,8 @@
   <ItemGroup>
     <Compile Include="Channel\Channel.cs" />
     <Compile Include="Database\Database.cs" />
+    <Compile Include="Modules\Events\ChannelLogEvent.cs" />
+    <Compile Include="Modules\Events\ClientIntroduceEvent.cs" />
     <Compile Include="Modules\Events\KickEvent.cs" />
     <Compile Include="Modules\Events\ChannelMessageEvent.cs" />
     <Compile Include="Modules\Events\Event.cs" />
