@@ -46,13 +46,13 @@ namespace dreamskape.Nickserv
             Help.registerHelp("REGISTER", "<password> <email>, Registers an account");
             Help.registerHelp("LOGIN", "<password> Logs you in to your account");
             Help.registerHelp("DROP", "<password> Drops your account, NOT " + Convert.ToChar(2) + "DEGROUP");
-            NickDatabase.loadRegistered();
         }
         public override void onServerBurstStart()
         {
             nickserv = new Client("NickServ", "NickServ", "S", "Nick.Serv", "Nickname Management Services", generateUID());
             nickserv.introduce();
             this.registerClient(nickserv);
+            NickDatabase.loadRegistered();
         }
 
         public override void onUserMessageClient(UserMessageEvent ev)

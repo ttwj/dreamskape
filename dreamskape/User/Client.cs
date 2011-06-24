@@ -15,7 +15,7 @@ namespace dreamskape.Users
             : base(nickname, username, modes, hostname, gecos, UID, introduced = false)
         {
            
-            Program.Clients.Add(this);
+            Program.Clients.Add(nickname.ToLower(), this);
         }
         public void introduce()
         {

@@ -164,13 +164,12 @@ namespace dreamskape.Proto
                                 Console.WriteLine(message);
                                 if (user != null)
                                 {
-                                    Console.WriteLine("calling hooK!");
                                     UserMessageEvent ev = new UserMessageEvent(sender, user, message);
                                     Module.callHook(Hooks.USER_MESSAGE_CLIENT, user, ev);
                                 }
                                 else if (channel != null)
                                 {
-                                    //not implemented :3d
+
                                 }
                                 else
                                 {

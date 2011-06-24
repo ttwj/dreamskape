@@ -8,8 +8,8 @@
     <ProjectGuid>{467D5F29-A23E-4328-ACFA-958E23B547E4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NickServ</RootNamespace>
-    <AssemblyName>NickServ</AssemblyName>
+    <RootNamespace>dreamskape.Nickserv</RootNamespace>
+    <AssemblyName>dreamskape.Nickserv</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -47,9 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Account.cs" />
     <Compile Include="Chars.cs" />
-    <Compile Include="Database.cs" />
     <Compile Include="Help.cs" />
     <Compile Include="NickServ.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

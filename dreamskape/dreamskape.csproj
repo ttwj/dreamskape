@@ -47,8 +47,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Database\Account.cs" />
     <Compile Include="Channel\Channel.cs" />
+    <Compile Include="Chars.cs" />
+    <Compile Include="Database\ChannelDatabase.cs" />
+    <Compile Include="Database\ChannelAccount.cs" />
     <Compile Include="Database\Database.cs" />
+    <Compile Include="Database\NickDatabase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Misc\SerializableDictionary.cs" />
     <Compile Include="Modules\Events\ChannelLogEvent.cs" />
     <Compile Include="Modules\Events\ClientIntroduceEvent.cs" />
     <Compile Include="Modules\Events\KickEvent.cs" />

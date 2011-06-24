@@ -117,12 +117,12 @@ namespace dreamskape.Operserv
             {
                 services = new Channel(channel, getTimeStamp());
             }
-            foreach (Client client in Program.Clients)
+            foreach (KeyValuePair<string, Client> c in Program.Clients)
             {
-                client.joinChannelMode(services, client, "+o");
-                if (client.nickname.ToLower() == "nickserv")
+                c.Value.joinChannelMode(services, c.Value, "+o");
+                if (c.Value.nickname.ToLower() == "nickserv")
                 {
-                    ns = client;
+                    ns = c.Value;
                 }
             }
         }
