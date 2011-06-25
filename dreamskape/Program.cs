@@ -34,9 +34,14 @@ namespace dreamskape
         }
         public static Client getClientFromNick(string nick)
         {
-            Client client;
-            Clients.TryGetValue(nick.ToLower(), out client);
-            return client;
+            foreach (KeyValuePair<string, Client> k in Clients)
+            {
+                if (nick.ToLower() == k.Key.ToLower())
+                {
+                    return k.Value;
+                }
+            }
+            return null;
         }
 
     }

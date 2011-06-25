@@ -1,0 +1,7 @@
+C:\Users\Terence\Documents\Visual Studio 2010\Projects\dreamskape\modules\Chanserv\obj\Release\ResolveAssemblyReference.cache
+C:\Users\Terence\Documents\Visual Studio 2010\Projects\dreamskape\modules\Chanserv\bin\Release\Chanserv.dll
+C:\Users\Terence\Documents\Visual Studio 2010\Projects\dreamskape\modules\Chanserv\bin\Release\Chanserv.pdb
+C:\Users\Terence\Documents\Visual Studio 2010\Projects\dreamskape\modules\Chanserv\bin\Release\dreamskape.exe
+C:\Users\Terence\Documents\Visual Studio 2010\Projects\dreamskape\modules\Chanserv\bin\Release\dreamskape.pdb
+C:\Users\Terence\Documents\Visual Studio 2010\Projects\dreamskape\modules\Chanserv\obj\Release\Chanserv.dll
+C:\Users\Terence\Documents\Visual Studio 2010\Projects\dreamskape\modules\Chanserv\obj\Release\Chanserv.pdb

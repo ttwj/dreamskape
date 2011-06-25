@@ -17,7 +17,7 @@ namespace dreamskape.Users
         public string modes = "";
         public bool isIntroduced = false;
         public bool loggedIn = false;
-        public int loginAttempts = 0;
+        public int loginAttempts;
         public User(string nickname, string username, string modes, string hostname, string gecos, string UID, bool introduced = false)
         {
             this.nickname = nickname;

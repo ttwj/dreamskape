@@ -114,15 +114,32 @@ namespace dreamskape.Proto
                             foreach (string user in userStringArray)
                             {
                                 string usr;
+                                User u = null;
                                 if (user.StartsWith("@") || user.StartsWith("+"))
                                 {
                                     usr = user.Remove(0, 1);
+                                    u = getUserFromUID(usr);
+                                    switch (user.Substring(0, 1))
+                                    {
+                                        case "@":
+                                            {
+                                                channel.Ops.Add(usr, u);
+                                                break;
+                                            }
+                                        case "+":
+                                            {
+                                                channel.Voices.Add(usr, u);
+                                                break;
+                                            }
+                                    }
                                 }
                                 else
                                 {
                                     usr = user;
+                                    u = getUserFromUID(usr);
                                 }
-                                User u = getUserFromUID(usr);
+
+                                Console.WriteLine("created channel " + channel.name);
                                 channel.addToChannel(u);
                             }
                             break;

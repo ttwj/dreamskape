@@ -52,7 +52,6 @@ namespace dreamskape.Nickserv
             nickserv = new Client("NickServ", "NickServ", "S", "Nick.Serv", "Nickname Management Services", generateUID());
             nickserv.introduce();
             this.registerClient(nickserv);
-            NickDatabase.loadRegistered();
         }
 
         public override void onUserMessageClient(UserMessageEvent ev)
@@ -128,6 +127,7 @@ namespace dreamskape.Nickserv
                             else
                             {
                                 Account account = NickDatabase.getAccountFromUser(user);
+                                Console.WriteLine(account.Password + " durr");
                                 account.user = user;
                                 account.login(messageArray[1]);
                             }
@@ -206,10 +206,12 @@ namespace dreamskape.Nickserv
             User user = ev.user;
             if (NickDatabase.isRegistered(user))
             {
-                nickserv.noticeUser(user, "This account is registered, type");
-                nickserv.noticeUser(user, Chars.bold + "/msg NickServ LOGIN <password>" + Chars.bold + " to login");
                 Account account = NickDatabase.getAccountFromUser(user);
                 account.user = user;
+                Console.WriteLine(account.user.nickname + "HIZ");
+                nickserv.noticeUser(user, "This account is registered, type");
+                nickserv.noticeUser(user, Chars.bold + "/msg NickServ LOGIN <password>" + Chars.bold + " to login");
+                
             }
         }
     }

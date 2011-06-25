@@ -54,7 +54,6 @@ namespace dreamskape.Operserv
         public override void onUserIdentifyFail(UserEvent ev)
         {
             User user = ev.user;
-            user.loginAttempts++;
             Console.WriteLine("blah blah blah");
             ns.messageChannel(services, Convert.ToChar(2) + user.loginAttempts + Convert.ToChar(2) + " failed login attempts by " + Convert.ToChar(2) + user.nickname + Convert.ToChar(2));
         }

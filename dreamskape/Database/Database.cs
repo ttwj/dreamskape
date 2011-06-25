@@ -31,6 +31,8 @@ namespace dreamskape.Databases
                     }
                 }
             }
+            NickDatabase.loadRegistered();
+            ChannelDatabase.loadRegistered();
         }
         public static DataTable ExecuteQuery(string sql)
         {
