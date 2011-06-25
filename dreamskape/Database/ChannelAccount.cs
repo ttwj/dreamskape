@@ -50,6 +50,9 @@ namespace dreamskape.Databases
             {
                 return ChannelAccountEvent.USER_NOT_LOGGED_IN;
             }
+            if (ChannelDatabase.ChannelAccounts.ContainsKey(Name.ToLower())) {
+                return ChannelAccountEvent.REGISTER_ALREADY_REGISTERED;
+            }
             Console.WriteLine("1");
             Console.WriteLine("channel-name " + this.channel.name);
             /*if (ChannelDatabase.isRegistered(this.channel)) 

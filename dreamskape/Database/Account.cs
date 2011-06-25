@@ -16,6 +16,15 @@ namespace dreamskape.Databases
 {
     public enum AccountEvent
     {
+        REGISTER_ALREADY_REGISTERED,
+        REGISTER_SUCCESS,
+        REGISTER_INVALID_EMAIL,
+
+        LOGIN_INVALID,
+        LOGIN_NOT_REGISTERED,
+        LOGIN_SUCCESS,
+
+        UNKNOWN,
     }
     [Serializable]
     public class Account
@@ -46,30 +55,26 @@ namespace dreamskape.Databases
             }
             return hash;
         }
-        public void login(string password)
+        public AccountEvent login(string password)
         {
             try
             {
                 Console.WriteLine(password);
-                if (NickDatabase.sha256(password) == Password)
+                if (!NickDatabase.isRegistered(this.user))
                 {
-                    foreach (KeyValuePair<string, Client> k in Program.Clients)
-                    {
-                        if (k.Key.ToLower() == "nickserv")
-                        {
-                            ns = k.Value;
-                        }
-                    }
+                    return AccountEvent.LOGIN_NOT_REGISTERED;
+                }
+                else if (NickDatabase.sha256(password) == Password)
+                {
                     Console.WriteLine("login sucessful");
-                    ns.noticeUser(this.user, "Login sucessful");
                     this.user.loggedIn = true;
                     UserEvent e = new UserEvent(this.user);
                     Module.callHook(Hooks.USER_IDENTIFY, null, e);
+                    return AccountEvent.LOGIN_SUCCESS;
                 }
                 else
                 {
                     Console.WriteLine(this.user.nickname + " logged in unsucessfully.");
-                    ns.noticeUser(this.user, Convert.ToChar(2) + "Invalid password.");
                     UserEvent e = new UserEvent(this.user);
                     if (user.loginAttempts == 0)
                     {
@@ -80,27 +85,38 @@ namespace dreamskape.Databases
                         this.user.loginAttempts++;
                     }
                     Module.callHook(Hooks.USER_IDENTIFY_FAIL, null, e);
-
+                    return AccountEvent.LOGIN_INVALID;
                 }
             }
-            catch (NullReferenceException e)
+            catch (Exception e)
             {
-                Console.WriteLine(e.GetType());
-                Console.WriteLine(e.StackTrace);
-                Console.WriteLine(e.Data);
+                Console.WriteLine("Problem: " + e.ToString());
                 
             }
+            return AccountEvent.UNKNOWN;
         }
 
-        public void register(string password)
+        public AccountEvent register(string password)
         {
-            this.Password = sha256(password);
-            this.User = this.user.nickname.ToLower();
-            Console.WriteLine(this.User + "BLAH");
-            ns.noticeUser(this.user, "Registration sucessful.");
-            UserEvent e = new UserEvent(this.user);
-            Module.callHook(Hooks.USER_REGISTER, null, e);
-            NickDatabase.createAccount(this);
+            try
+            {
+                if (NickDatabase.isRegistered(user))
+                {
+                    return AccountEvent.REGISTER_ALREADY_REGISTERED;
+                }
+                this.Password = sha256(password);
+                this.User = this.user.nickname.ToLower();
+                Console.WriteLine(this.User + "BLAH");
+                UserEvent e = new UserEvent(this.user);
+                Module.callHook(Hooks.USER_REGISTER, null, e);
+                NickDatabase.createAccount(this);
+                return AccountEvent.REGISTER_SUCCESS;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Problem: " + e.ToString());
+            }
+            return AccountEvent.UNKNOWN;
         }
         public void drop(string password)
         {

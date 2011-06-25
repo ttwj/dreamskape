@@ -101,7 +101,14 @@ namespace dreamskape.Nickserv
                             else
                             {
                                 Account account = new Account(user);
-                                account.register(messageArray[1]);
+                                AccountEvent ae = account.register(messageArray[1]);
+                                switch (ae)
+                                {
+                                    case AccountEvent.REGISTER_ALREADY_REGISTERED:
+                                        {
+                                            break;
+                                        }
+                                }
                             }
                             break;
                         }
@@ -115,11 +122,6 @@ namespace dreamskape.Nickserv
                                 nickserv.noticeUser(user, help);
                                 return;
                             }
-                            else if (!NickDatabase.isRegistered(user)) {
-                                nickserv.noticeUser(user, Chars.bold + "Error: This nickname is not registered");
-                                nickserv.noticeUser(user, "Use /msg NickServ REGISTER to register");
-                                return;
-                            }
                             else if (user.loggedIn)
                             {
                                 nickserv.noticeUser(user, Chars.bold + "You are already logged in.");
@@ -127,9 +129,30 @@ namespace dreamskape.Nickserv
                             else
                             {
                                 Account account = NickDatabase.getAccountFromUser(user);
-                                Console.WriteLine(account.Password + " durr");
-                                account.user = user;
-                                account.login(messageArray[1]);
+                                AccountEvent ae = account.login(messageArray[1]);
+                                switch (ae)
+                                {
+                                    case AccountEvent.LOGIN_INVALID:
+                                        {
+                                            nickserv.noticeUser(user, Chars.bold + "Invalid password.");
+                                            break;
+                                        }
+                                    case AccountEvent.LOGIN_NOT_REGISTERED:
+                                        {
+                                            nickserv.noticeUser(user, Chars.bold + "Your account is not registered, /msg NickServ REGISTER to register");
+                                            break;
+                                        }
+                                    case AccountEvent.LOGIN_SUCCESS:
+                                        {
+                                            nickserv.noticeUser(user, Chars.bold + "You are now logged in.");
+                                            break;
+                                        }
+                                    default:
+                                        {
+                                            nickserv.noticeUser(user, "An unexpected error occured (" + ae.ToString() + ")");
+                                            break;
+                                        }
+                                }
                             }
                             break;
                         }
