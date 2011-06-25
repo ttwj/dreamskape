@@ -100,6 +100,19 @@ namespace dreamskape.Proto
 
                             break;
                         }
+                    case "PART":
+                        {
+                            Channel channel = getChannelFromName(lineArray[2]);
+                            if (channel == null)
+                            {
+                                Console.WriteLine("attempted to remove user from non-existant channel " + lineArray[2]);
+                                return;
+                            }
+                            User user = getUserFromUID(lineArray[0].Remove(0, 1));
+                            channel.removeFromChannel(user);
+                            
+                            break;
+                        }
                     case "SJOIN":
                         {
                             Channel channel = getChannelFromName(lineArray[3]);
@@ -214,6 +227,7 @@ namespace dreamskape.Proto
                             user.modes = user.modes + lineArray[3].Remove(0, 1);
                             break;
                         }
+                   
                 }
             }
 

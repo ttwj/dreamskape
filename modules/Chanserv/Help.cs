@@ -9,6 +9,7 @@ namespace dreamskape.Chanserv
     public static class Help
     {
         public static Dictionary<string, string> HelpDict;
+        public static Dictionary<string, string> SubHelpDict;
         public static void initHelp()
         {
             HelpDict = new Dictionary<string, string>();
@@ -19,15 +20,19 @@ namespace dreamskape.Chanserv
         }
         public static void showHelp(User user)
         {
-            NickServ.cs.noticeUser(user, Convert.ToChar(2) + "------ ChanServ Help ------");
-            NickServ.cs.noticeUser(user, "For information on a command type " + Convert.ToChar(2) + "/msg ChanServ help <command>");
-            NickServ.cs.noticeUser(user, " ");
-            NickServ.cs.noticeUser(user, "The follow commands are avaliable: ");
+            ChanServ.cs.noticeUser(user, Convert.ToChar(2) + "------ ChanServ Help ------");
+            ChanServ.cs.noticeUser(user, "For information on a command type " + Convert.ToChar(2) + "/msg ChanServ help <command>");
+            ChanServ.cs.noticeUser(user, " ");
+            ChanServ.cs.noticeUser(user, "The follow commands are avaliable: ");
             foreach (KeyValuePair<string, string> key in HelpDict)
             {
-                NickServ.cs.noticeUser(user, Convert.ToChar(2) + key.Key + Convert.ToChar(2) + "        " + key.Value);
+                ChanServ.cs.noticeUser(user, Convert.ToChar(2) + key.Key + Convert.ToChar(2) + "        " + key.Value);
             }
-            NickServ.cs.noticeUser(user, Convert.ToChar(2) + "------ End of Help ------");
+            ChanServ.cs.noticeUser(user, Convert.ToChar(2) + "------ End of Help ------");
+        }
+        public static void registerSubHelp(string sub, string command, string help)
+        {
+            
         }
     }
 }

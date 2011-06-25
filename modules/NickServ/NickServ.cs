@@ -108,6 +108,21 @@ namespace dreamskape.Nickserv
                                         {
                                             break;
                                         }
+                                    case AccountEvent.REGISTER_INVALID_EMAIL:
+                                        {
+                                            nickserv.noticeUser(user, Chars.bold + "Invalid Email");
+                                            break;
+                                        }
+                                    case AccountEvent.REGISTER_SUCCESS:
+                                        {
+                                            nickserv.noticeUser(user, Chars.bold + "You are now registered.");
+                                            break;
+                                        }
+                                    default:
+                                        {
+                                            nickserv.noticeUser(user, "An unexpected error occured. " + ae.ToString());
+                                            break;
+                                        }
                                 }
                             }
                             break;

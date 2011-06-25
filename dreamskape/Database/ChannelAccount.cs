@@ -26,8 +26,9 @@ namespace dreamskape.Databases
         DROP_USER_NOT_LOGGED_IN,
 
         ACCESS_SUCESS,
-        ACCESS_NOPERM
+        ACCESS_NOPERM,
 
+        UNKNOWN,
     }
 
     [Serializable]
@@ -46,33 +47,33 @@ namespace dreamskape.Databases
 
         public ChannelAccountEvent register(string password, Account user)
         {
-            if (!user.user.loggedIn)
+            try
             {
-                return ChannelAccountEvent.USER_NOT_LOGGED_IN;
+                this.Name = channel.name.ToLower();
+                if (!user.user.loggedIn)
+                {
+                    return ChannelAccountEvent.USER_NOT_LOGGED_IN;
+                }
+                if (ChannelDatabase.ChannelAccounts.ContainsKey(Name.ToLower()))
+                {
+                    return ChannelAccountEvent.REGISTER_ALREADY_REGISTERED;
+                }
+                Console.WriteLine("1");
+                Console.WriteLine("channel-name " + this.channel.name);
+                //set the owner password etc.
+                this.Password = Database.sha256(password);
+                this.Access = new SerializableDictionary<Account, int>();
+                //add access stuff
+                setAccess(user, 5);
+                //register!
+                ChannelDatabase.createChannel(this);
+                return ChannelAccountEvent.REGISTER_SUCESS;
             }
-            if (ChannelDatabase.ChannelAccounts.ContainsKey(Name.ToLower())) {
-                return ChannelAccountEvent.REGISTER_ALREADY_REGISTERED;
-            }
-            Console.WriteLine("1");
-            Console.WriteLine("channel-name " + this.channel.name);
-            /*if (ChannelDatabase.isRegistered(this.channel)) 
+            catch (NullReferenceException e)
             {
-                return ChannelAccountEvent.REGISTER_ALREADY_REGISTERED;
-            }*/
-            Console.WriteLine("dur");
-            //set the channel name, owner password etc.
-            this.Name = channel.name.ToLower();
-            Console.WriteLine("a");
-            this.Password = Database.sha256(password);
-            Console.WriteLine("ab");
-            this.Access = new SerializableDictionary<Account, int>();
-            //add access stuff
-            Console.WriteLine("abc");
-            Access.Add(user, 5);
-            //register!
-            Console.WriteLine("abcd");
-            ChannelDatabase.createChannel(this);
-            return ChannelAccountEvent.REGISTER_SUCESS;
+                Console.WriteLine(e.ToString());
+            }
+            return ChannelAccountEvent.UNKNOWN;
         }
         public ChannelAccountEvent drop(string password, Account user)
         {
@@ -88,7 +89,7 @@ namespace dreamskape.Databases
             ChannelDatabase.destroyChannel(this);
             return ChannelAccountEvent.DROP_SUCCESS;
         }
-        public ChannelAccountEvent access(Account user, int access)
+        public ChannelAccountEvent AccountSetAccess(Account user, int access)
         {
             if (Access.ContainsKey(user))
             {
@@ -101,6 +102,15 @@ namespace dreamskape.Databases
             Access.Add(user, access);
             ChannelDatabase.updateChannel(this);
             return ChannelAccountEvent.ACCESS_SUCESS;
+        }
+        public void setAccess(Account user, int access)
+        {
+            if (Access.ContainsKey(user))
+            {
+                Access.Remove(user);
+            }
+            Access.Add(user, access);
+            ChannelDatabase.updateChannel(this);
         }
         public int getAccess(Account user)
         {

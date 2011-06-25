@@ -57,6 +57,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Misc\SerializableDictionary.cs" />
+    <Compile Include="Modules\Events\ChannelAccountEvent.cs" />
     <Compile Include="Modules\Events\ChannelLogEvent.cs" />
     <Compile Include="Modules\Events\ClientIntroduceEvent.cs" />
     <Compile Include="Modules\Events\KickEvent.cs" />

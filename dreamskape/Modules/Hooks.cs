@@ -15,6 +15,8 @@ namespace dreamskape.Modules
         USER_IDENTIFY,
         USER_IDENTIFY_FAIL,
         USER_REGISTER,
+        USER_JOIN_CHAN,
+        USER_PART_CHAN,
         USER_BURST_CONNECT,
         CHANNEL_LOG,
         CHANNEL_REGISTER,
@@ -29,6 +31,8 @@ namespace dreamskape.Modules
         USER_VHOST_REQUEST,
         USER_VHOST_REJECT,
         USER_VHOST_ACTIVATE,
+
+        CHANNEL_LOGIN,
 
     }
 }
