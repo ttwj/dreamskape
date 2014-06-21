@@ -1,0 +1,12 @@
+/Users/ttwj/Desktop/dreamskape/modules/NickServ/obj/Release/.NETFramework,Version=v4.0.AssemblyAttribute.cs
+/Users/ttwj/Desktop/dreamskape/modules/NickServ/bin/Release/NickServ.dll
+/Users/ttwj/Desktop/dreamskape/modules/NickServ/obj/Release/NickServ.dll
+/Users/ttwj/Desktop/dreamskape/modules/NickServ/bin/Release/System.Data.SQLite.dll
+/Users/ttwj/Desktop/dreamskape/modules/NickServ/bin/Release/ServiceStack.Interfaces.dll
+/Users/ttwj/Desktop/dreamskape/modules/NickServ/bin/Release/ServiceStack.Text.dll
+/Users/ttwj/Desktop/dreamskape/modules/NickServ/bin/Release/ServiceStack.Common.dll
+/Users/ttwj/Desktop/dreamskape/modules/NickServ/bin/Release/ServiceStack.OrmLite.dll
+/Users/ttwj/Desktop/dreamskape/modules/NickServ/bin/Release/Mono.Data.Sqlite.dll
+/Users/ttwj/Desktop/dreamskape/modules/NickServ/bin/Release/ServiceStack.OrmLite.Sqlite.dll
+/Users/ttwj/Desktop/dreamskape/modules/NickServ/bin/Release/dreamskape.exe
+/Users/ttwj/Desktop/dreamskape/modules/NickServ/bin/Release/dreamskape.exe.mdb

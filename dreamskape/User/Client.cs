@@ -23,7 +23,7 @@ namespace dreamskape.Users
             {
                 Protocol.protocolPlugin.introduceUser(nickname, username, modes, hostname, gecos, UID);
                 ClientIntroduceEvent ev = new ClientIntroduceEvent(this);
-                Module.callHook(Hooks.CLIENT_INTRO, this, ev);
+                ModuleManager.callHook(Hooks.CLIENT_INTRO, this, ev);
                 Console.WriteLine("derp");
                 this.isIntroduced = true;
             }

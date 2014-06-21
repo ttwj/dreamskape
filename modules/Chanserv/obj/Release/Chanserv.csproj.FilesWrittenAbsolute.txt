@@ -1,0 +1,5 @@
+/Users/ttwj/Desktop/dreamskape/modules/Chanserv/obj/Release/.NETFramework,Version=v4.0.AssemblyAttribute.cs
+/Users/ttwj/Desktop/dreamskape/bin/modules/Chanserv.dll.mdb
+/Users/ttwj/Desktop/dreamskape/bin/modules/Chanserv.dll
+/Users/ttwj/Desktop/dreamskape/modules/Chanserv/obj/Release/Chanserv.dll
+/Users/ttwj/Desktop/dreamskape/modules/Chanserv/obj/Release/Chanserv.dll.mdb

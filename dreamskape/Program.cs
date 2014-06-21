@@ -25,11 +25,11 @@ namespace dreamskape
             Channels = new Dictionary<string, Channel>();
             Clients = new Dictionary<string, Client>();
             Protocol.loadPlugins();
-            Module.loadPlugins();
+            ModuleManager.loadPlugins();
             ProtocolPlugin p = Protocol.protocolPlugin;
-            p.Init("192.168.1.109", "derp.services", 6667, "pvps1234", SID);
+			p.Init("127.0.0.1", "services.int", 6667, "pvps1234", SID);
             Database.Init();
-            Module.InitModules();
+            ModuleManager.InitModules();
             Protocol.protocolPlugin.Connect();
         }
         public static Client getClientFromNick(string nick)
@@ -43,6 +43,9 @@ namespace dreamskape
             }
             return null;
         }
-
+		public static void Shutdown() {
+			ModuleManager.Shutdown ();
+			System.Environment.Exit(0);
+		}
     }
 }

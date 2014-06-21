@@ -5,22 +5,31 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 using System.IO;
+using System.Data;
 using dreamskape.Channels;
 using dreamskape.Users;
 using dreamskape.Modules.Events;
+using ServiceStack.OrmLite;
 
 namespace dreamskape.Modules
 {
-    public class Module
+    public class ModuleManager
     {
         public static ArrayList moduleList;
+
+		public static void Shutdown() {
+			foreach (ModulePlugin plugin in moduleList) {
+				plugin.Shutdown ();
+			}
+		}
+
         public static void loadPlugins()
         {
             moduleList = new ArrayList();
             try
             {
                 Console.WriteLine("Loading modules..");
-                foreach (string str in Directory.GetFiles(@"modules\"))
+				foreach (string str in Directory.GetFiles(@"modules/"))
                 {
                     FileInfo info = new FileInfo(str);
                     if (info.Name.EndsWith(".dll"))
@@ -57,6 +66,24 @@ namespace dreamskape.Modules
                 plugin.Initialize();
             }
         }
+		public static void callInitDb(OrmLiteConnectionFactory dbFactory) {
+			foreach (ModulePlugin module in moduleList) {
+				using (IDbConnection db = dbFactory.OpenDbConnection ()) { 
+					module.initDatabase (db);
+					Console.WriteLine ("calling init db for " + module.Name);
+				}
+
+			}
+		}
+		public static void callLoadDb(OrmLiteConnectionFactory dbFactory) {
+			foreach (ModulePlugin module in moduleList) {
+				using (IDbConnection db = dbFactory.OpenDbConnection ()) { 
+					module.loadDatabase (db);
+					Console.WriteLine ("calling load db for " + module.Name);
+				}
+
+			}
+		}
         public static void callHook(Hooks hook, Client client, Event ev = null)
         {
             foreach (ModulePlugin module in moduleList)

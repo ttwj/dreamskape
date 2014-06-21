@@ -30,12 +30,29 @@ namespace dreamskape.Proto
             try
             {
                 Console.WriteLine("Connecting to " + server + ":" + port);
-                IRC = new TcpClient(server, port);
+				IRC = new TcpClient();
+				IRC.Connect(server, port);
                 stream = IRC.GetStream();
+				Console.WriteLine("stream ok");
                 writer = new StreamWriter(stream);
+				Console.WriteLine("writer ok");
+
+
                 reader = new StreamReader(stream);
+				Console.WriteLine("reader ok");
+				if (!hasBurst) {
+					Console.WriteLine("beginning burst");
+					burst();
+					hasBurst = true;
+					ModuleManager.callHook(Hooks.SERVER_BURST_START, null, null);
+				}
+				else {
+					Console.WriteLine("huh burst already uh??");
+				}
+
                 while (true)
                 {
+
                     while ((inputLine = reader.ReadLine()) != null)
                     {
                         Console.WriteLine("< " + inputLine);
@@ -63,11 +80,7 @@ namespace dreamskape.Proto
         public void parseLine(string line)
         {
             string[] lineArray = line.Split(' ');
-            if (!hasBurst)
-            {
-                burst();
-                Module.callHook(Hooks.SERVER_BURST_START, null, null);
-            }
+            
             string lineStart = lineArray[0];
             if (lineStart == "PING")
             {
@@ -75,7 +88,7 @@ namespace dreamskape.Proto
                 if (burstComplete == false)
                 {
                     Console.WriteLine("calling hook burst_Complete ===");
-                    Module.callHook(Hooks.SERVER_BURST_END, null, null);
+                    ModuleManager.callHook(Hooks.SERVER_BURST_END, null, null);
                     burstComplete = true;
                 }
             }
@@ -173,8 +186,8 @@ namespace dreamskape.Proto
                             User newuser = new User(user_nickname, user_username, user_modes, user_host, user_realname, user_UID);
                             Console.WriteLine("Initiated new user " + newuser.nickname);
                             UserEvent ev = new UserEvent(newuser);
-                            Module.callHook(Hooks.USER_CONNECT, null, ev);
-                            Module.callHook(Hooks.USER_BURST_CONNECT, null, ev);
+                            ModuleManager.callHook(Hooks.USER_CONNECT, null, ev);
+                            ModuleManager.callHook(Hooks.USER_BURST_CONNECT, null, ev);
                             break;
                         }
                     case "PRIVMSG":
@@ -195,7 +208,7 @@ namespace dreamskape.Proto
                                 if (user != null)
                                 {
                                     UserMessageEvent ev = new UserMessageEvent(sender, user, message);
-                                    Module.callHook(Hooks.USER_MESSAGE_CLIENT, user, ev);
+                                    ModuleManager.callHook(Hooks.USER_MESSAGE_CLIENT, user, ev);
                                 }
                                 else if (channel != null)
                                 {
@@ -217,7 +230,7 @@ namespace dreamskape.Proto
                             Console.WriteLine("changed " + user.nickname);
                             UserNickChangeEvent ev = new UserNickChangeEvent(user, oldnick, lineArray[2]);
                             Console.WriteLine("calling hook!");
-                            Module.callHook(Hooks.USER_NICKCHANGE, null, ev);
+                            ModuleManager.callHook(Hooks.USER_NICKCHANGE, null, ev);
                             break;
                         }
                     case "MODE":

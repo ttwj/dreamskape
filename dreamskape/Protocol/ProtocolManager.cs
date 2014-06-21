@@ -17,7 +17,7 @@ namespace dreamskape.Proto
             try
             {
                 Console.WriteLine("Loading protocol modules..");
-                foreach (string str in Directory.GetFiles(@"protocol\"))
+				foreach (string str in Directory.GetFiles(@"protocol/"))
                 {
                     FileInfo info = new FileInfo(str);
                     if (info.Name == Program.protocol)

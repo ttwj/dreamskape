@@ -1,0 +1,5 @@
+/Users/ttwj/Desktop/dreamskape/modules/OperServ/obj/Release/.NETFramework,Version=v4.0.AssemblyAttribute.cs
+/Users/ttwj/Desktop/dreamskape/bin/modules/OperServ.dll.mdb
+/Users/ttwj/Desktop/dreamskape/bin/modules/OperServ.dll
+/Users/ttwj/Desktop/dreamskape/modules/OperServ/obj/Release/OperServ.dll
+/Users/ttwj/Desktop/dreamskape/modules/OperServ/obj/Release/OperServ.dll.mdb

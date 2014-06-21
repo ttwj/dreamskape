@@ -15,12 +15,16 @@ namespace dreamskape.Operserv
     {
         public static Client os;
         public string channel = "#services";
-        public Channel services;
+		public override string Name {
+			get {
+				return "OperServ";
+			}
+		}
+		public Channel services;
         public Client ns;
-        //slaving another client ftw.
+
         public override void Initialize()
         {
-            
             this.registerHook(Hooks.SERVER_BURST_START);
             this.registerHook(Hooks.SERVER_BURST_END);
             this.registerHook(Hooks.USER_MESSAGE_CLIENT);
@@ -28,9 +32,9 @@ namespace dreamskape.Operserv
             this.registerHook(Hooks.USER_IDENTIFY_FAIL);
             this.registerHook(Hooks.USER_CONNECT);
             this.registerHook(Hooks.CLIENT_INTRO);
-            Help.initHelp();
-            Help.registerHelp("HELP", "Shows help - duh");
-            Help.registerHelp("SHUTDOWN", "Shutdown services :O!");
+			dreamskape.Operserv.Help.initHelp();
+			dreamskape.Operserv.Help.registerHelp("HELP", "Shows help - duh");
+			dreamskape.Operserv.Help.registerHelp("SHUTDOWN", "Shutdown services :O!");
             
             
         }
@@ -76,7 +80,8 @@ namespace dreamskape.Operserv
                             if (user.modes.Contains('o'))
                             {
                                 Protocol.protocolPlugin.Send("QUIT: bai bai");
-                                System.Environment.Exit(0);
+								Program.Shutdown();
+
                             }
                             else
                             {
