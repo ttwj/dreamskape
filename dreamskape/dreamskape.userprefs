@@ -1,0 +1,19 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release|x86" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="../modules/Chanserv/ChanServ.cs">
+    <Files>
+      <File FileName="../modules/Chanserv/ChanServ.cs" Line="36" Column="16" />
+      <File FileName="../protocols/Charybdis/Charybdis.cs" Line="286" Column="39" />
+      <File FileName="../modules/NickServ/NickServ.cs" Line="64" Column="14" />
+      <File FileName="Program.cs" Line="31" Column="14" />
+      <File FileName="Modules/ModuleManager.cs" Line="15" Column="31" />
+      <File FileName="Database/Database.cs" Line="30" Column="35" />
+      <File FileName="Modules/ModulePlugin.cs" Line="85" Column="3" />
+      <File FileName="../modules/Chanserv/ChannelManager.cs" Line="77" Column="10" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
