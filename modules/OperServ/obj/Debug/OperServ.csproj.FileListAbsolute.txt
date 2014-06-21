@@ -1,7 +1,0 @@
-C:\Users\Terence\Documents\Visual Studio 2010\Projects\dreamskape\modules\OperServ\bin\Debug\OperServ.dll
-C:\Users\Terence\Documents\Visual Studio 2010\Projects\dreamskape\modules\OperServ\bin\Debug\OperServ.pdb
-C:\Users\Terence\Documents\Visual Studio 2010\Projects\dreamskape\modules\OperServ\bin\Debug\dreamskape.exe
-C:\Users\Terence\Documents\Visual Studio 2010\Projects\dreamskape\modules\OperServ\bin\Debug\dreamskape.pdb
-C:\Users\Terence\Documents\Visual Studio 2010\Projects\dreamskape\modules\OperServ\obj\Debug\ResolveAssemblyReference.cache
-C:\Users\Terence\Documents\Visual Studio 2010\Projects\dreamskape\modules\OperServ\obj\Debug\OperServ.dll
-C:\Users\Terence\Documents\Visual Studio 2010\Projects\dreamskape\modules\OperServ\obj\Debug\OperServ.pdb

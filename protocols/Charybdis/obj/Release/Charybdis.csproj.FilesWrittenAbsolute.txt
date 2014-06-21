@@ -1,5 +1,0 @@
-/Users/ttwj/Desktop/dreamskape/protocols/Charybdis/obj/Release/.NETFramework,Version=v4.0.AssemblyAttribute.cs
-/Users/ttwj/Desktop/dreamskape/bin/protocol/Charybdis.dll.mdb
-/Users/ttwj/Desktop/dreamskape/bin/protocol/Charybdis.dll
-/Users/ttwj/Desktop/dreamskape/protocols/Charybdis/obj/Release/Charybdis.dll
-/Users/ttwj/Desktop/dreamskape/protocols/Charybdis/obj/Release/Charybdis.dll.mdb
